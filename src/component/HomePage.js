@@ -177,7 +177,7 @@ const HomePage = () => {
         <> 
           { !((tokenID > 1000 && tokenID < 2701 && faction1<700) || (tokenID > 2700 && tokenID < 4401 && faction2<700) || (tokenID > 4400 && tokenID <= 6100 && faction3<700))? null : ( 
         <>
-          <NFTImage  key={tokenID} imageUrl={`ipfs://QmRiiD1GGx31PHDNQXywh5QTwcyE92e1BubsqhFLFPq6aC/${tokenID}`+`.png`} />
+          <NFTImage  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmRiiD1GGx31PHDNQXywh5QTwcyE92e1BubsqhFLFPq6aC/${tokenID}`+`.png`} />
         
           <input className='checkit' type="checkbox" value={tokenID} onChange={() => handleCheckboxChange(tokenID)}/>
         </> 
