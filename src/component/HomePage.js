@@ -78,7 +78,7 @@ const HomePage = () => {
       gas: "185000",
       from: blockchain.account,
     });
-    //console.log(safeApproval);
+    isApprovedCGB();
   }
 
   async function mintNFT()  {
