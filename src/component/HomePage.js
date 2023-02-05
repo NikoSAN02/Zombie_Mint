@@ -78,6 +78,7 @@ const HomePage = () => {
       gas: "185000",
       from: blockchain.account,
     });
+    isApprovedCGB();
     //console.log(safeApproval);
   }
 
