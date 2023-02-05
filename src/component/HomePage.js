@@ -18,6 +18,7 @@ const HomePage = () => {
   var [faction2, setFaction2] = useState([]);
   var [faction3, setFaction3] = useState([]);
   var [isApprovedForAll, setIsApprovedForAll] = useState([]);
+  var [zombieCount, setZombieCount] = useState([]);
 
   const blockchain = useSelector((state) => state.blockchain);
 
@@ -25,7 +26,7 @@ const HomePage = () => {
   
     if(blockchain.CGBSmartContract){
       tokenIDs = await blockchain.CGBSmartContract.methods.getWalletOfOwner(blockchain.account).call();
-      console.log(tokenIDs);
+      //console.log(tokenIDs);
       //fetchImages();
       setTokenIDs(tokenIDs);
     }
@@ -37,8 +38,8 @@ const HomePage = () => {
     if(blockchain.account && blockchain.CGBSmartContract)
     {
       isApprovedForAll = await blockchain.CGBSmartContract.methods.isApprovedForAll(blockchain.account, lockerContractAddress).call();
-      console.log("isapprovedCGB");
-      console.log(isApprovedForAll);
+      //console.log("isapprovedCGB");
+      //console.log(isApprovedForAll);
       setIsApprovedForAll(isApprovedForAll);
     }
 
@@ -49,13 +50,13 @@ const HomePage = () => {
     {
       faction1 = await blockchain.GorLocSmartContract.methods.factionBurnCount(0).call();
       setFaction1(faction1);
-      console.log(faction1);
+      //console.log(faction1);
       faction2 = await blockchain.GorLocSmartContract.methods.factionBurnCount(1).call();
       setFaction2(faction2);
-      console.log(faction2);
+      //console.log(faction2);
       faction3 = await blockchain.GorLocSmartContract.methods.factionBurnCount(2).call();
       setFaction3(faction3);
-      console.log(faction3);
+      //console.log(faction3);
 
     }
   } 
@@ -67,7 +68,7 @@ const HomePage = () => {
     } else {
       setSelectedTokenIds([...selectedTokenIds, tokenId]);
     }
-    console.log(selectedTokenIds);
+    //console.log(selectedTokenIds);
   };
 
   async function safeApprovalCGB(){
@@ -76,12 +77,12 @@ const HomePage = () => {
       gas: "285000",
       from: blockchain.account,
     });
-    console.log(safeApproval);
+    //console.log(safeApproval);
   }
 
   async function mintNFT()  {
    
-    console.log(selectedTokenIds.length);
+    //console.log(selectedTokenIds.length);
     if(selectedTokenIds.length < 3){
       alert("Please select atleast 3 CGB to mint");
     }
@@ -90,11 +91,13 @@ const HomePage = () => {
       {
         const multiplier = selectedTokenIds.length/3;
         const mintPrice = 75*multiplier;
-        console.log(mintPrice);
+        const gasPriceVal = 585000*multiplier;
+
+        //console.log(mintPrice);
         //const estGas = await blockchain.ZFSmartContract.methods.mint(selectedTokenIds).estimateGas({ from: blockchain.account });
         //console.log(estGas);
         await blockchain.ZFSmartContract.methods.mint(selectedTokenIds).send({
-          gas: "585000",
+          gas: gasPriceVal,
           from: blockchain.account,
           value: blockchain.web3.utils.toWei((mintPrice).toString(), "ether"),
         }).once("error", (err) => {
@@ -104,6 +107,7 @@ const HomePage = () => {
           alert("Mint Successful");
           dispatch(fetchData());
           getTokenIds();
+          getWalletZombies();
         });
       }
       else{
@@ -113,10 +117,21 @@ const HomePage = () => {
     }
   };
 
+  async function getWalletZombies()  {
+
+    if(blockchain.account && blockchain.ZFSmartContract){
+      zombieCount = await blockchain.ZFSmartContract.methods.getWalletOfOwner(blockchain.account).call();
+      console.log(zombieCount.length);
+      setZombieCount(zombieCount);
+    }
+
+  }
+
   useEffect(() => {
     getTokenIds();
     getFactionCount();
     isApprovedCGB();
+    getWalletZombies();
   }, [blockchain.account]);
 
   return (
@@ -129,17 +144,21 @@ const HomePage = () => {
       Any combination of the 3 factions will work with a cap of 700 each. </label>
       </div>
 
-      <div className='faction'>
-
-        {/* <label className='newFont' > Aqua: </label>
+      <div className='faction desc'>
+         <div><label className='newFont' > BURN METER = </label> 
+         
+         <label className='newFont' > Aqua: </label>
           <label className='newFont' > {faction1} </label>
-        <br/>
+        
         <label className='newFont' > Terra:</label>
           <label className='newFont' >{faction2} </label>
-        <br/>
+        
         <label className='newFont' > Ignis: </label>
           <label className='newFont' >{faction3} </label>
-        <br/> */}
+        </div>
+        <div>
+        <label className='newFont' > Zombie Minted = {zombieCount.length} </label>
+        </div>
 
       </div>
 
@@ -170,7 +189,7 @@ const HomePage = () => {
 
       
 
-
+      { blockchain.account == null ? null : ( 
       <div className='MintButton'  >
         { isApprovedForAll ? (
         <>     
@@ -182,7 +201,8 @@ const HomePage = () => {
         <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8" , }} onClick={safeApprovalCGB}>
           <a style={{fontSize:"20px"}} className='newFont mintHover '>Approve</a>
         </Button>)}
-      </div>
+      </div>)
+      }
 
 
 
