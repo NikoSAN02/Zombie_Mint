@@ -72,7 +72,8 @@ const HomePage = () => {
   };
 
   async function safeApprovalCGB(){
-    var safeApproval = await blockchain.CGBSmartContract.methods.setApprovalForAll("0xb57252faf8a7910be62e1f35ec6e0ddb478f2868",true)
+    const lockerContractAddress = "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7";
+    var safeApproval = await blockchain.CGBSmartContract.methods.setApprovalForAll(lockerContractAddress,true)
     .send({
       gas: "285000",
       from: blockchain.account,
