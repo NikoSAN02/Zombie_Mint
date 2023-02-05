@@ -23,15 +23,15 @@ var networkName = "CRO";
 
 const networks = {
 	CRO: {
-		chainId: `0x${Number(338).toString(16)}`,
-        chainName: "Cronos Testnet",
+		chainId: `0x${Number(25).toString(16)}`,
+        chainName: "Cronos Mainnet Beta",
         nativeCurrency: {
-          name: "Cronos Testnet",
-          symbol: "TCRO",
+          name: "Cronos Mainnet Beta",
+          symbol: "CRO",
           decimals: 18
         },
-        rpcUrls: ["https://evm-t3.cronos.org/"],
-        blockExplorerUrls: ["https://testnet.cronoscan.com/"]
+        rpcUrls: ["https://evm.cronos.org/"],
+        blockExplorerUrls: ["https://cronoscan.com/"]
       },
 };
 

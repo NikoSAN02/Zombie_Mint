@@ -102,6 +102,7 @@ const HomePage = () => {
           value: blockchain.web3.utils.toWei((mintPrice).toString(), "ether"),
         }).once("error", (err) => {
           console.log(err);
+          alert("Error occured while minting");
         })
         .then((receipt) => {
           alert("Mint Successful");
@@ -121,7 +122,7 @@ const HomePage = () => {
 
     if(blockchain.account && blockchain.ZFSmartContract){
       zombieCount = await blockchain.ZFSmartContract.methods.getWalletOfOwner(blockchain.account).call();
-      console.log(zombieCount.length);
+      //console.log(zombieCount.length);
       setZombieCount(zombieCount);
     }
 
@@ -176,7 +177,7 @@ const HomePage = () => {
         <> 
           { !((tokenID > 1000 && tokenID < 2701 && faction1<700) || (tokenID > 2700 && tokenID < 4401 && faction2<700) || (tokenID > 4400 && tokenID <= 6100 && faction3<700))? null : ( 
         <>
-          <NFTImage  key={tokenID} imageUrl={`https://bafybeibshhfup5upjwz6akbpcw2in57qwojj5jmfpk3id2mmprpme34ite.ipfs.dweb.link/${tokenID}`+`.png`} />
+          <NFTImage  key={tokenID} imageUrl={`ipfs://QmRiiD1GGx31PHDNQXywh5QTwcyE92e1BubsqhFLFPq6aC/${tokenID}`+`.png`} />
         
           <input className='checkit' type="checkbox" value={tokenID} onChange={() => handleCheckboxChange(tokenID)}/>
         </> 

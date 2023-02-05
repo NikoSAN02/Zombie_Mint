@@ -55,18 +55,18 @@ export const connectMM = () => {
         });
         
         // const NetworkData = await SmartContract.networks[networkId];
-          if (networkId == 338) {
+          if (networkId == 25) {
             const SmartContractObjCGB = new Web3EthContract(
               CGBSmartContract,
-              "0xD0f8b5D890a8b37Ec3D464B3686699037717193E"
+              "0xc843f18d5605654391e7eDBEa250f6838C3e8936"
             );
             const SmartContractObjZF = new Web3EthContract(
               ZFSmartContract,
-              "0xc8212b5617de7d4e99bbaa5d1b9f1b2fb7a49e87"
+              "0x89D3671ed4561C1775b3B2a5713B08224f610D4D"
             );
             const SmartContractObjGL = new Web3EthContract(
               GorLocSmartContract,
-              "0xb57252faf8a7910be62e1f35ec6e0ddb478f2868"
+              "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7"
             );
           
           dispatch(
@@ -120,10 +120,10 @@ export const connectWC = () => {
 
     var accountWC = "";
     const connector = new DeFiWeb3Connector({
-      supportedChainIds: [338],
+      supportedChainIds: [25],
       rpc: {
-        [338]:
-        "https://evm-t3.cronos.org/",
+        [25]:
+        "https://evm.cronos.org/",
       },
       pollingInterval: 15000,
     });
@@ -139,18 +139,18 @@ export const connectWC = () => {
       method: "net_version",
     });
     
-    if (networkId  == 338) {
+    if (networkId  == 25) {
       const SmartContractObjCGB = new Web3EthContract(
         CGBSmartContract,
-        "0xD0f8b5D890a8b37Ec3D464B3686699037717193E"
+        "0xc843f18d5605654391e7eDBEa250f6838C3e8936"
       );
       const SmartContractObjZF = new Web3EthContract(
         ZFSmartContract,
-        "0xc8212b5617de7d4e99bbaa5d1b9f1b2fb7a49e87"
+        "0x89D3671ed4561C1775b3B2a5713B08224f610D4D"
       );
       const SmartContractObjGL = new Web3EthContract(
         GorLocSmartContract,
-        "0xb57252faf8a7910be62e1f35ec6e0ddb478f2868"
+        "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7"
       );
 
       dispatch(
