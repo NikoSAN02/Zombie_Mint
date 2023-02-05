@@ -17,6 +17,7 @@ const HomePage = () => {
   var [faction1, setFaction1] = useState([]);
   var [faction2, setFaction2] = useState([]);
   var [faction3, setFaction3] = useState([]);
+  var [zombieSupply, setZombieSupply] = useState([]);
   var [isApprovedForAll, setIsApprovedForAll] = useState([]);
   var [zombieCount, setZombieCount] = useState([]);
 
@@ -57,7 +58,8 @@ const HomePage = () => {
       faction3 = await blockchain.GorLocSmartContract.methods.factionBurnCount(2).call();
       setFaction3(faction3);
       //console.log(faction3);
-
+      zombieSupply = await blockchain.ZFSmartContract.methods.totalSupply().call();
+      setZombieSupply(zombieSupply);
     }
   } 
 
@@ -159,7 +161,7 @@ const HomePage = () => {
           <label className='newFont' >{faction3} </label>
         </div>
         <div>
-        <label className='newFont' > Zombie Minted = {zombieCount.length} </label>
+        <label className='newFont' > Zombie Minted = {zombieSupply}/700 </label>
         </div>
 
       </div>
