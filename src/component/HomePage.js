@@ -163,7 +163,9 @@ const HomePage = () => {
         <div>
         <label className='newFont' > Zombie Minted = {zombieSupply}/700 </label>
         </div>
-
+        <div>
+        <label className='newFont' > You minted {zombieCount.length} </label>
+        </div>
       </div>
 
 
