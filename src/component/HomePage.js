@@ -34,7 +34,7 @@ const HomePage = () => {
   
   async function isApprovedCGB()
   {
-    const lockerContractAddress = "0xb57252faf8a7910be62e1f35ec6e0ddb478f2868";
+    const lockerContractAddress = "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7";
     if(blockchain.account && blockchain.CGBSmartContract)
     {
       isApprovedForAll = await blockchain.CGBSmartContract.methods.isApprovedForAll(blockchain.account, lockerContractAddress).call();
