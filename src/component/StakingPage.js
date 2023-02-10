@@ -6,11 +6,9 @@ import { width } from '@mui/system';
 const StakingPage = () => {
     const [value, setValue] = React.useState(2);
 
-    function onChangeTab(){
-        alert(value);
-        setValue(1);
-    }
-  return (
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+      };  return (
     
     <>
     <div style={{display:"flex"}}>
@@ -45,11 +43,30 @@ const StakingPage = () => {
     </div>
     <div style={{paddingLeft:"40px"}}>
         <div style={{width:"500px",height:"600px", background:"#fff"}}>
-        <Tabs value={value}  onChange={onChangeTab} aria-label="basic tabs example">
-            <Tab label="Item One" value={0} />
-            <Tab label="Item Two" value={1} />
-            <Tab label="Item Three" value={2} />
+        <Tabs value={value}  onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="Your Stats" value={0} />
+            <Tab label="Global Stats" value={1} />
+            <Tab label="Withdraw" value={2} />
         </Tabs>
+        <div >
+        {value === 0 && <div style={{alignItems:""}}> 
+            Staked NFTs: 1 
+            <br/>
+            Days passed since last withdrawa: 149
+            <br/>
+            $CBP Earned: 360.33
+            <br/>
+            Current malus: 0%
+            <br/>
+            Available for withdraw: 360.33 $CPB
+            <br/>
+            Total Claimed: 0.00 $CPB
+            </div>
+        }
+        {value === 1 && <p>This is the content for Tab 2.</p>}
+        {value === 2 && <p>This is the content for Tab 3.</p>}
+      </div>
+
 
             <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8"  }} >
           <a style={{fontSize:"12px"}} className='newFont mintHover '> Claim All</a>
