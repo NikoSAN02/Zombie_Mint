@@ -4,7 +4,8 @@ import { DeFiWeb3Connector } from "deficonnect";
 import Web3 from "web3";
 import CGBSmartContract from "../../contracts/CronosGorillaB.json";
 import ZFSmartContract from "../../contracts/ZombieFactory.json";
-import GorLocSmartContract from "../../contracts/GorillaLocker.json"
+import GorLocSmartContract from "../../contracts/GorillaLocker.json";
+import CroStkSmartContract from "../../contracts/CrotopiaStaking.json";
 // log
 import { fetchData } from "../data/dataActions";
 
@@ -55,19 +56,28 @@ export const connectMM = () => {
         });
         
         // const NetworkData = await SmartContract.networks[networkId];
-          if (networkId == 25) {
+          if (networkId == 338) {
             const SmartContractObjCGB = new Web3EthContract(
               CGBSmartContract,
-              "0xc843f18d5605654391e7eDBEa250f6838C3e8936"
+              //"0xc843f18d5605654391e7eDBEa250f6838C3e8936" mainnet
+              "0xD0f8b5D890a8b37Ec3D464B3686699037717193E"
             );
             const SmartContractObjZF = new Web3EthContract(
               ZFSmartContract,
-              "0x89D3671ed4561C1775b3B2a5713B08224f610D4D"
+              //"0x89D3671ed4561C1775b3B2a5713B08224f610D4D" mainnet
+              "0xc8212b5617de7d4e99bbaa5d1b9f1b2fb7a49e87"
             );
             const SmartContractObjGL = new Web3EthContract(
               GorLocSmartContract,
-              "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7"
+              //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
+              "0xb57252faf8a7910be62e1f35ec6e0ddb478f2868"
             );
+            const SmartContractObjCroStk = new Web3EthContract(
+              CroStkSmartContract,
+              //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
+              "0xf0A8a7F43e2B65261228bb6E8622308D5798743c"
+            );
+            
           
           dispatch(
             connectSuccess({
@@ -75,6 +85,7 @@ export const connectMM = () => {
               CGBSmartContract: SmartContractObjCGB,
               ZFSmartContract: SmartContractObjZF,
               GorLocSmartContract: SmartContractObjGL,
+              CroStkSmartContract: SmartContractObjCroStk,
               web3: web3,
             })
           );
@@ -120,11 +131,17 @@ export const connectWC = () => {
 
     var accountWC = "";
     const connector = new DeFiWeb3Connector({
-      supportedChainIds: [25],
+    /*  supportedChainIds: [25],
       rpc: {
         [25]:
         "https://evm.cronos.org/",
+      },*/
+      supportedChainIds: [338],
+      rpc: {
+        [338]:
+        "https://evm-t3.cronos.org/",
       },
+
       pollingInterval: 15000,
     });
     await connector.activate();
@@ -139,18 +156,26 @@ export const connectWC = () => {
       method: "net_version",
     });
     
-    if (networkId  == 25) {
+    if (networkId  == 338) {
       const SmartContractObjCGB = new Web3EthContract(
         CGBSmartContract,
-        "0xc843f18d5605654391e7eDBEa250f6838C3e8936"
+        //"0xc843f18d5605654391e7eDBEa250f6838C3e8936" mainnet
+        "0xD0f8b5D890a8b37Ec3D464B3686699037717193E"
       );
       const SmartContractObjZF = new Web3EthContract(
         ZFSmartContract,
-        "0x89D3671ed4561C1775b3B2a5713B08224f610D4D"
+        //"0x89D3671ed4561C1775b3B2a5713B08224f610D4D" mainnet
+        "0xc8212b5617de7d4e99bbaa5d1b9f1b2fb7a49e87"
       );
       const SmartContractObjGL = new Web3EthContract(
         GorLocSmartContract,
-        "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7"
+        //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
+        "0xb57252faf8a7910be62e1f35ec6e0ddb478f2868"
+      );
+      const SmartContractObjCroStk = new Web3EthContract(
+        CroStkSmartContract,
+        //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
+        "0xf0A8a7F43e2B65261228bb6E8622308D5798743c"
       );
 
       dispatch(
@@ -159,6 +184,7 @@ export const connectWC = () => {
           CGBSmartContract: SmartContractObjCGB,
           ZFSmartContract: SmartContractObjZF,
           GorLocSmartContract: SmartContractObjGL,
+          CroStkSmartContract: SmartContractObjCroStk,
           web3: web3,
         })
       );

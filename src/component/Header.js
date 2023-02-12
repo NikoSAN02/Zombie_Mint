@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../redux/data/dataActions";
 import { connectMM } from "../redux/blockchain/blockchainActions";
 import { connectWC } from "../redux/blockchain/blockchainActions";
-import {AppBar,Container,Menu,MenuItem,Select,Button,Toolbar,Typography,} from "@mui/material";
+import {AppBar,Container,Toolbar,Typography,} from "@mui/material";
 
 
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ import walltlogo from '../Images/walletlogo.png'
 var networkName = "CRO";
 
 const networks = {
-	CRO: {
+/*	CRO: {
 		chainId: `0x${Number(25).toString(16)}`,
         chainName: "Cronos Mainnet Beta",
         nativeCurrency: {
@@ -35,6 +35,18 @@ const networks = {
         rpcUrls: ["https://evm.cronos.org/"],
         blockExplorerUrls: ["https://cronoscan.com/"]
       },
+      */
+      CRO: {
+        chainId: `0x${Number(338).toString(16)}`,
+            chainName: "Cronos Testnet",
+            nativeCurrency: {
+              name: "Cronos Testnet",
+              symbol: "TCRO",
+              decimals: 18
+            },
+            rpcUrls: ["https://evm-t3.cronos.org/"],
+            blockExplorerUrls: ["https://testnet.cronoscan.com/"]
+          },
 };
 
 const changeNetwork = async ({ networkName, setError }) => {

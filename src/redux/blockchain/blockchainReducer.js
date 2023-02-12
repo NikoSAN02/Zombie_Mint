@@ -4,6 +4,7 @@ const initialState = {
   CGBSmartContract: null,
   ZFSmartContract: null,
   GorLocSmartContract: null,
+  CroStkSmartContract:null,
   web3: null,
   errorMsg: "",
 };
@@ -23,6 +24,7 @@ const blockchainReducer = (state = initialState, action) => {
         CGBSmartContract: action.payload.CGBSmartContract,
         ZFSmartContract: action.payload.ZFSmartContract,
         GorLocSmartContract: action.payload.GorLocSmartContract,
+        CroStkSmartContract: action.payload.CroStkSmartContract,
         web3: action.payload.web3,
       };
     case "CONNECTION_FAILED":
