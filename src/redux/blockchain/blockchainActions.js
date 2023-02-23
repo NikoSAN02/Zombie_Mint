@@ -36,6 +36,12 @@ const updateAccountRequest = (payload) => {
   };
 };
 
+const CGBContractAdd = process.env.REACT_APP_CGB_CONTRACT_ADD;
+const ZFContractAdd = process.env.REACT_APP_ZF_CONTRACT_ADD;
+const GorLocContractAdd = process.env.REACT_APP_GOR_LOC_CONTRACT_ADD;
+const CroStkContractAdd = process.env.REACT_APP_CRO_STK_CONTRACT_ADD;
+
+
 export const connectMM = () => {
   return async (dispatch) => {
     dispatch(connectRequest());
@@ -60,24 +66,38 @@ export const connectMM = () => {
             const SmartContractObjCGB = new Web3EthContract(
               CGBSmartContract,
               //"0xc843f18d5605654391e7eDBEa250f6838C3e8936" mainnet
-              "0xD0f8b5D890a8b37Ec3D464B3686699037717193E"
+              CGBContractAdd
             );
             const SmartContractObjZF = new Web3EthContract(
               ZFSmartContract,
               //"0x89D3671ed4561C1775b3B2a5713B08224f610D4D" mainnet
-              "0xc8212b5617de7d4e99bbaa5d1b9f1b2fb7a49e87"
+              ZFContractAdd
             );
             const SmartContractObjGL = new Web3EthContract(
               GorLocSmartContract,
               //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
-              "0xb57252faf8a7910be62e1f35ec6e0ddb478f2868"
+              GorLocContractAdd
             );
             const SmartContractObjCroStk = new Web3EthContract(
               CroStkSmartContract,
               //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
-              "0xf0A8a7F43e2B65261228bb6E8622308D5798743c"
+              CroStkContractAdd
+            );
+
+            const SmartContractObjCMB = new Web3EthContract(
+              CGBSmartContract,
+              process.env.REACT_APP_CMB_CONTRACT_ADD
+            );
+
+            const SmartContractObjCPT = new Web3EthContract(
+              CGBSmartContract,
+              process.env.REACT_APP_CPT_CONTRACT_ADD
             );
             
+            const SmartContractObjOG = new Web3EthContract(
+              CGBSmartContract,
+              process.env.REACT_APP_OG_CONTRACT_ADD
+            );
           
           dispatch(
             connectSuccess({
@@ -86,6 +106,9 @@ export const connectMM = () => {
               ZFSmartContract: SmartContractObjZF,
               GorLocSmartContract: SmartContractObjGL,
               CroStkSmartContract: SmartContractObjCroStk,
+              CMBSmartContract: SmartContractObjCMB,
+              CPTSmartContract: SmartContractObjCPT,
+              OGSmartContract: SmartContractObjOG,
               web3: web3,
             })
           );
@@ -160,22 +183,36 @@ export const connectWC = () => {
       const SmartContractObjCGB = new Web3EthContract(
         CGBSmartContract,
         //"0xc843f18d5605654391e7eDBEa250f6838C3e8936" mainnet
-        "0xD0f8b5D890a8b37Ec3D464B3686699037717193E"
+        CGBContractAdd
       );
       const SmartContractObjZF = new Web3EthContract(
         ZFSmartContract,
         //"0x89D3671ed4561C1775b3B2a5713B08224f610D4D" mainnet
-        "0xc8212b5617de7d4e99bbaa5d1b9f1b2fb7a49e87"
+        ZFContractAdd
       );
       const SmartContractObjGL = new Web3EthContract(
         GorLocSmartContract,
         //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
-        "0xb57252faf8a7910be62e1f35ec6e0ddb478f2868"
+        GorLocContractAdd
       );
       const SmartContractObjCroStk = new Web3EthContract(
         CroStkSmartContract,
         //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
-        "0xf0A8a7F43e2B65261228bb6E8622308D5798743c"
+        CroStkContractAdd
+      );
+      const SmartContractObjCMB = new Web3EthContract(
+        CGBSmartContract,
+        process.env.REACT_APP_CMB_CONTRACT_ADD
+      );
+
+      const SmartContractObjCPT = new Web3EthContract(
+        CGBSmartContract,
+        process.env.REACT_APP_CPT_CONTRACT_ADD
+      );
+      
+      const SmartContractObjOG = new Web3EthContract(
+        CGBSmartContract,
+        process.env.REACT_APP_OG_CONTRACT_ADD
       );
 
       dispatch(
@@ -185,6 +222,9 @@ export const connectWC = () => {
           ZFSmartContract: SmartContractObjZF,
           GorLocSmartContract: SmartContractObjGL,
           CroStkSmartContract: SmartContractObjCroStk,
+          CMBSmartContract: SmartContractObjCMB,
+          CPTSmartContract: SmartContractObjCPT,
+          OGSmartContract: SmartContractObjOG,
           web3: web3,
         })
       );
