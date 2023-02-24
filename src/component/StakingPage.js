@@ -54,6 +54,7 @@ const StakingPage = () => {
         const tokenIDsCPT = await blockchain.CroStkSmartContract.methods.tokensOfWallet(blockchain.account, collectionCPT).call();
         setTokenIDsCPT(tokenIDsCPT);
     }
+    unCheckAllCheckboxes();
     }
 
     async function getNFTStakedByUser(){
@@ -70,6 +71,18 @@ const StakingPage = () => {
         const stakedTokenIDsCPT = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCPT).call();
         setStakedTokenIDsCPT(stakedTokenIDsCPT);
     }
+    unCheckAllCheckboxes();
+    }
+
+    //uncheck all the checkboxes on refresh
+    function unCheckAllCheckboxes(){
+      // Get a reference to each checkbox element
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+      // Loop through each checkbox and uncheck it
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+      });
     }
 
     async function isApprovedAll()
@@ -153,44 +166,50 @@ const StakingPage = () => {
   
     async function stakeNFTs(){
 
-      getDetailsOfCheckbox();
+      if(isApprovedForAllCGB && isApprovedForAllCPT && isApprovedForAllCMB && isApprovedForAllOG && isApprovedForAllZF){
 
-      const gasPriceVal = 585000;
+        getDetailsOfCheckbox();
 
-      if(collectionArray.length == 0)
-      {
-        alert("select atleast 1 NFT to stake");
-      }
-      else{
+        const gasPriceVal = 585000;
 
-        console.log(collectionArray.toString());
-        console.log(tokenIdsArray.toString());
+        if(collectionArray.length == 0)
+        {
+          alert("select atleast 1 NFT to stake");
+        }
+        else{
 
-       await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).send({
-          gas: gasPriceVal,
-          from: blockchain.account,
-        }).once("error", (err) => {
-          console.log(err);
-          alert("Error occured while staking");
-        })
-        .then((receipt) => {
-          alert("Staked Successful");
-          
-        });
-      }
-      getNFTOwnedByUser();
-      getNFTStakedByUser();
+          console.log(collectionArray.toString());
+          console.log(tokenIdsArray.toString());
+
+        await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).send({
+            gas: gasPriceVal,
+            from: blockchain.account,
+          }).once("error", (err) => {
+            console.log(err);
+            alert("Error occured while staking");
+          })
+          .then((receipt) => {
+            alert("Staked Successful");
+            
+          });
+        }
+        getNFTOwnedByUser();
+        getNFTStakedByUser();
+    }
+    else{
+      alert("Please approve all first");
+    }
     }
 
     async function unStakeNFTs(){
 
-      getDetailsOfCheckbox();
+      getDetailsOfCheckboxUnstaking();
 
       const gasPriceVal = 585000;
 
       if(collectionArray.length == 0)
       {
-        alert("select atleast 1 NFT to unStake");
+        alert("Select atleast 1 NFT to Unstake");
       }
       else{
 
@@ -202,7 +221,7 @@ const StakingPage = () => {
           from: blockchain.account,
         }).once("error", (err) => {
           console.log(err);
-          alert("Error occured while unStaking");
+          alert("Error occured while Unstaking");
         })
         .then((receipt) => {
           alert("Unstaked Successful");
@@ -219,20 +238,57 @@ const StakingPage = () => {
       const collectionOrder = [];
     
       selectedCheckboxes.forEach((checkbox) => {
-        const collectionName = checkbox.getAttribute("data-collection");
-        const checkboxValue = checkbox.value;
-    
-        if (!selectedCollections[collectionName]) {
-          selectedCollections[collectionName] = [];
-          collectionOrder.push(collectionName);
+        if(checkbox.getAttribute("data-staking") === "STAKING"){
+          const collectionName = checkbox.getAttribute("data-collection");
+          const checkboxValue = checkbox.value;
+      
+          if (!selectedCollections[collectionName]) {
+            selectedCollections[collectionName] = [];
+            collectionOrder.push(collectionName);
+          }
+      
+          selectedCollections[collectionName].push(checkboxValue);
+      
+          if (!collectionOrder.includes(collectionName)) {
+            collectionOrder.push(collectionName);
+          }
         }
+        });
+
+      
     
-        selectedCollections[collectionName].push(checkboxValue);
+      collectionArray = collectionOrder.flatMap((collectionName) => Array(selectedCollections[collectionName].length).fill(collectionName));
+      tokenIdsArray = collectionOrder.flatMap((collectionName) => selectedCollections[collectionName]);
     
-        if (!collectionOrder.includes(collectionName)) {
-          collectionOrder.push(collectionName);
+      setCollectionArray(collectionArray);
+      setTokenIDsArray(tokenIdsArray);
+      console.log(collectionArray, tokenIdsArray);
+    }
+
+    function getDetailsOfCheckboxUnstaking() {
+      const selectedCheckboxes = document.querySelectorAll("input[type=checkbox]:checked");
+      const selectedCollections = {};
+      const collectionOrder = [];
+    
+      selectedCheckboxes.forEach((checkbox) => {
+        if(checkbox.getAttribute("data-staking") === "UNSTAKING"){
+          const collectionName = checkbox.getAttribute("data-collection");
+          const checkboxValue = checkbox.value;
+      
+          if (!selectedCollections[collectionName]) {
+            selectedCollections[collectionName] = [];
+            collectionOrder.push(collectionName);
+          }
+      
+          selectedCollections[collectionName].push(checkboxValue);
+      
+          if (!collectionOrder.includes(collectionName)) {
+            collectionOrder.push(collectionName);
+          }
         }
-      });
+        });
+
+      
     
       collectionArray = collectionOrder.flatMap((collectionName) => Array(selectedCollections[collectionName].length).fill(collectionName));
       tokenIdsArray = collectionOrder.flatMap((collectionName) => selectedCollections[collectionName]);
@@ -287,7 +343,7 @@ const StakingPage = () => {
         {tokenIDsZB.map((tokenID, index) => (
         <>
         <NFTImageStaking key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmSDx92bvTcZeL7WVyjz92e44LqjvqyKZQACsJ4sCEg4uq/${tokenID}`+`.png`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionZB}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="STAKING" data-collection={collectionZB}/>
         </>
         )
         )}
@@ -295,7 +351,7 @@ const StakingPage = () => {
         {tokenIDsCGB.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmRiiD1GGx31PHDNQXywh5QTwcyE92e1BubsqhFLFPq6aC/${tokenID}`+`.png`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionCGB}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="STAKING" data-collection={collectionCGB}/>
         </>
         )
         )}
@@ -303,7 +359,7 @@ const StakingPage = () => {
         {tokenIDsCMB.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmWaTZfpZDRbdvkQaC7wjph4nhBPetB4N1FqRp11GLVjLJ/${tokenID}`+`.png`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionCMB}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="STAKING" data-collection={collectionCMB}/>
         </>
         )
         )}
@@ -312,7 +368,7 @@ const StakingPage = () => {
         {tokenIDsOG.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://bafybeid2qcpqmnet42w7wjl2lurkql2fiscv5ca7quk5utvteu46s2tlau.ipfs.nftstorage.link/`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionOG}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="STAKING" data-collection={collectionOG}/>
         </>
         )
         )}
@@ -320,7 +376,7 @@ const StakingPage = () => {
         {tokenIDsCPT.map((tokenID, index) => (
         <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmeBWVydfc6tuEBEP8tCUDA4QBJuPXDePHuTFqJ4hvjx3g/${tokenID}`+`.png`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionCPT}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="STAKING" data-collection={collectionCPT}/>
         </>
         )
         )}<br/>
@@ -347,7 +403,7 @@ const StakingPage = () => {
         {stakedTokenIDsZB.map((tokenID, index) => (
         <>
         <NFTImageStaking key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmSDx92bvTcZeL7WVyjz92e44LqjvqyKZQACsJ4sCEg4uq/${tokenID}`+`.png`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionZB}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="UNSTAKING" data-collection={collectionZB}/>
         </>
         )
         )}
@@ -355,7 +411,7 @@ const StakingPage = () => {
         {stakedTokenIDsCGB.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmRiiD1GGx31PHDNQXywh5QTwcyE92e1BubsqhFLFPq6aC/${tokenID}`+`.png`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionCGB}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="UNSTAKING" data-collection={collectionCGB}/>
         </>
         )
         )}
@@ -363,7 +419,7 @@ const StakingPage = () => {
         {stakedTokenIDsCMB.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmWaTZfpZDRbdvkQaC7wjph4nhBPetB4N1FqRp11GLVjLJ/${tokenID}`+`.png`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionCMB}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="UNSTAKING" data-collection={collectionCMB}/>
         </>
         )
         )}
@@ -372,7 +428,7 @@ const StakingPage = () => {
         {stakedTokenIDsOG.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://bafybeid2qcpqmnet42w7wjl2lurkql2fiscv5ca7quk5utvteu46s2tlau.ipfs.nftstorage.link/`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionOG}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="UNSTAKING" data-collection={collectionOG}/>
         </>
         )
         )}
@@ -380,7 +436,7 @@ const StakingPage = () => {
         {stakedTokenIDsCPT.map((tokenID, index) => (
         <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmeBWVydfc6tuEBEP8tCUDA4QBJuPXDePHuTFqJ4hvjx3g/${tokenID}`+`.png`} />
-        <input className='checkit' type="checkbox" value={tokenID} data-collection={collectionCPT}/>
+        <input className='checkit' type="checkbox" value={tokenID} data-staking="UNSTAKING" data-collection={collectionCPT}/>
         </>
         )
         )}<br/>
