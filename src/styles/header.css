@@ -65,6 +65,28 @@ body {
 	transition: 1s;
   }
 
+/*------------------------------------------------
+	  Staking Page
+-------------------------------------------------*/
+
+  .singleImageStk{
+	display: inline;
+	justify-content: center;
+	border: 2.5px solid #3a3a3a;
+	height: 80px;
+	border-radius: 10px;
+	filter: drop-shadow(-5px 5px 7px #ef476f);
+	transition: 0.5s;
+  }
+
+  .singleImageStk:hover{
+	filter: drop-shadow(-5px 5px 7px #06d6a0);
+	border: 2.5px solid #d8d8d8;
+	transition: 1s;
+  }
+
+
+
   .imageBundle{
 	padding: 20px;
   }

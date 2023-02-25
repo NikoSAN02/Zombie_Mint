@@ -23,6 +23,8 @@ const HomePage = () => {
 
   const blockchain = useSelector((state) => state.blockchain);
 
+  const lockerContractAddress = "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7"; //mainnet
+
   async function getTokenIds(){ 
   
     if(blockchain.CGBSmartContract){
@@ -35,7 +37,6 @@ const HomePage = () => {
   
   async function isApprovedCGB()
   {
-    const lockerContractAddress = "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7";
     if(blockchain.account && blockchain.CGBSmartContract)
     {
       isApprovedForAll = await blockchain.CGBSmartContract.methods.isApprovedForAll(blockchain.account, lockerContractAddress).call();
@@ -43,8 +44,8 @@ const HomePage = () => {
       //console.log(isApprovedForAll);
       setIsApprovedForAll(isApprovedForAll);
     }
-
   }
+
   async function getFactionCount(){
     
     if(blockchain.GorLocSmartContract)
@@ -74,7 +75,6 @@ const HomePage = () => {
   };
 
   async function safeApprovalCGB(){
-    const lockerContractAddress = "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7";
     var safeApproval = await blockchain.CGBSmartContract.methods.setApprovalForAll(lockerContractAddress,true)
     .send({
       gas: "185000",
