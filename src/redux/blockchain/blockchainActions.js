@@ -6,6 +6,7 @@ import CGBSmartContract from "../../contracts/CronosGorillaB.json";
 import ZFSmartContract from "../../contracts/ZombieFactory.json";
 import GorLocSmartContract from "../../contracts/GorillaLocker.json";
 import CroStkSmartContract from "../../contracts/CrotopiaStaking.json";
+import CroLocSmartContract from "../../contracts/CrotopiaLocker.json";
 // log
 import { fetchData } from "../data/dataActions";
 
@@ -98,6 +99,10 @@ export const connectMM = () => {
               CGBSmartContract,
               process.env.REACT_APP_OG_CONTRACT_ADD
             );
+            const SmartContractCroLoc = new Web3EthContract(
+              CroLocSmartContract,
+              process.env.REACT_APP_CRO_LOC_CONTRACT_ADD
+            )
           
           dispatch(
             connectSuccess({
@@ -109,6 +114,7 @@ export const connectMM = () => {
               CMBSmartContract: SmartContractObjCMB,
               CPTSmartContract: SmartContractObjCPT,
               OGSmartContract: SmartContractObjOG,
+              CroLocSmartContract: SmartContractCroLoc,
               web3: web3,
             })
           );
@@ -215,6 +221,11 @@ export const connectWC = () => {
         process.env.REACT_APP_OG_CONTRACT_ADD
       );
 
+      const SmartContractCroLoc = new Web3EthContract(
+        CroLocSmartContract,
+        process.env.REACT_APP_CRO_LOC_CONTRACT_ADD
+      )
+
       dispatch(
         connectSuccess({
           account: accounts[0],
@@ -225,6 +236,7 @@ export const connectWC = () => {
           CMBSmartContract: SmartContractObjCMB,
           CPTSmartContract: SmartContractObjCPT,
           OGSmartContract: SmartContractObjOG,
+          CroLocSmartContract: SmartContractCroLoc,
           web3: web3,
         })
       );

@@ -8,6 +8,7 @@ const initialState = {
   CMBSmartContract: null,
   CPTSmartContract: null,
   OGSmartContract: null,
+  CroLocSmartContract: null,
   web3: null,
   errorMsg: "",
 };
@@ -31,6 +32,7 @@ const blockchainReducer = (state = initialState, action) => {
         CMBSmartContract: action.payload.CMBSmartContract,
         CPTSmartContract: action.payload.CPTSmartContract,
         OGSmartContract: action.payload.OGSmartContract,
+        CroLocSmartContract: action.payload.CroLocSmartContract,
         web3: action.payload.web3,
       };
     case "CONNECTION_FAILED":

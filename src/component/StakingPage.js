@@ -7,18 +7,24 @@ import { width } from '@mui/system';
 
 
 const StakingPage = () => {
-    const [value, setValue] = React.useState(2);
+    const [value, setValue] = React.useState(0);
     const blockchain = useSelector((state) => state.blockchain);
     var [isApprovedForAllCGB, setIsApprovedForAllCGB] = useState([]);
     var [isApprovedForAllCMB, setIsApprovedForAllCMB] = useState([]);
     var [isApprovedForAllCPT, setIsApprovedForAllCPT] = useState([]);
     var [isApprovedForAllOG, setIsApprovedForAllOG] = useState([]);
     var [isApprovedForAllZF, setIsApprovedForAllZF] = useState([]);
+    var [sumNftStakedbyUser, setSumNftStakedbyUser] = useState([]);
+    var [currentAirdropRound, setCurrentAirdropRound] = useState([]);
+    var [userAirdropRound, setUserAirdropRound] = useState([]);
+    var [userLockedBalance, setUserLockedBalance] = useState([]);
+    var [daysSinceLastClaimed, setDaysSinceLastClaimed] = useState([]);
+    var [userMulusVal, setUserMulusVal] = useState([]);
+    var [tokensEarned, setTokensEarned] = useState([]);
     
     var [collectionArray, setCollectionArray] = useState(null);
     var [tokenIdsArray, setTokenIDsArray] = useState(null);
 
-    const stakingLockerContract = process.env.REACT_APP_STK_LOCKER_CONTRACT_ADD;//"0xf0A8a7F43e2B65261228bb6E8622308D5798743c";
     const stakingContract = process.env.REACT_APP_CRO_STK_CONTRACT_ADD;
 
     let [tokenIDsCGB, setTokenIDsCGB] = useState([]);
@@ -68,7 +74,7 @@ const StakingPage = () => {
         setStakedTokenIDsCMB(stakedTokenIDsCMB);
         stakedTokenIDsOG = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionOG).call();
         setStakedTokenIDsOG(stakedTokenIDsOG);
-        const stakedTokenIDsCPT = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCPT).call();
+        stakedTokenIDsCPT = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCPT).call();
         setStakedTokenIDsCPT(stakedTokenIDsCPT);
     }
     unCheckAllCheckboxes();
@@ -90,31 +96,26 @@ const StakingPage = () => {
       if(blockchain.account && blockchain.CGBSmartContract)
       {
         isApprovedForAllCGB = await blockchain.CGBSmartContract.methods.isApprovedForAll(blockchain.account, stakingContract).call();
-        console.log(isApprovedForAllCGB);
         setIsApprovedForAllCGB(isApprovedForAllCGB);
       }
       if(blockchain.account && blockchain.CMBSmartContract)
       {
         isApprovedForAllCMB = await blockchain.CMBSmartContract.methods.isApprovedForAll(blockchain.account, stakingContract).call();
-        console.log(isApprovedForAllCMB);
         setIsApprovedForAllCMB(isApprovedForAllCMB);
       }
       if(blockchain.account && blockchain.CPTSmartContract)
       {
         isApprovedForAllCPT = await blockchain.CPTSmartContract.methods.isApprovedForAll(blockchain.account, stakingContract).call();
-        console.log(isApprovedForAllCPT);
         setIsApprovedForAllCPT(isApprovedForAllCPT);
       }
       if(blockchain.account && blockchain.OGSmartContract)
       {
         isApprovedForAllOG = await blockchain.OGSmartContract.methods.isApprovedForAll(blockchain.account, stakingContract).call();
-        console.log(isApprovedForAllOG);
         setIsApprovedForAllOG(isApprovedForAllOG);
       }
       if(blockchain.account && blockchain.ZFSmartContract)
       {
         isApprovedForAllZF = await blockchain.ZFSmartContract.methods.isApprovedForAll(blockchain.account, stakingContract).call();
-        console.log(isApprovedForAllZF);
         setIsApprovedForAllZF(isApprovedForAllZF);
       }
     }
@@ -195,6 +196,7 @@ const StakingPage = () => {
         }
         getNFTOwnedByUser();
         getNFTStakedByUser();
+        getTotalNFTStakedByUser()
     }
     else{
       alert("Please approve all first");
@@ -230,6 +232,7 @@ const StakingPage = () => {
       }
       getNFTOwnedByUser();
       getNFTStakedByUser();
+      getTotalNFTStakedByUser()
     }
 
     function getDetailsOfCheckbox() {
@@ -299,10 +302,78 @@ const StakingPage = () => {
     }
 
 
+    async function getTotalNFTStakedByUser(){
+      if(blockchain.account && blockchain.CroStkSmartContract)
+      {
+        const ZBStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionZB).call();
+        const CGBStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionCGB).call();
+        const CMBStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionCMB).call();
+        const OGStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionOG).call();
+        const CPTStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionCPT).call();
+        sumNftStakedbyUser = parseInt(ZBStaked) + parseInt(CGBStaked) + parseInt(CMBStaked) + parseInt(OGStaked) + parseInt(CPTStaked);
+        setSumNftStakedbyUser(sumNftStakedbyUser);
+    }
+    unCheckAllCheckboxes();
+    }
+
+    async function checkAirDropRound(){
+      if(blockchain.account && blockchain.CroLocSmartContract)
+      {
+        try{
+              currentAirdropRound = await blockchain.CroLocSmartContract.methods.airdropRound().call();
+              setCurrentAirdropRound(currentAirdropRound);
+              const userDetails = await blockchain.CroLocSmartContract.methods.usersLocker(blockchain.account).call();
+              userAirdropRound = userDetails.airdropRound;
+              setUserAirdropRound(userAirdropRound);
+              userLockedBalance = userDetails.lockedBalance;
+              setUserLockedBalance(userLockedBalance);
+
+              console.log(userAirdropRound); 
+              console.log(userDetails);
+              const mulusValue = await blockchain.CroLocSmartContract.methods.getUserTaxAmount(blockchain.account).call();
+              console.log(mulusValue.taxPercentage);
+              userMulusVal = mulusValue.taxPercentage;
+              setUserMulusVal(userMulusVal);
+            }
+            catch (err)
+            {
+              console.log(err);
+            }
+      }
+    }
+
+    async function handleAirdrop() {
+      const resp = await blockchain.CroLocSmartContract.methods.airdropRound().call();
+      console.log(resp);
+      checkAirDropRound();
+    } 
+
+    async function lastClaimedTime(){
+      if(blockchain.account && blockchain.CroStkSmartContract){
+        const lastClaimedTimeStamp = await blockchain.CroStkSmartContract.methods.stakers(blockchain.account).call();
+        console.log(lastClaimedTimeStamp.lastClaimedTimestamp);
+        let currentTimestamp = Math.floor(Date.now() / 1000);
+        let difference = currentTimestamp - lastClaimedTimeStamp.lastClaimedTimestamp;
+
+        daysSinceLastClaimed = Math.floor(difference / 86400);
+        setDaysSinceLastClaimed(daysSinceLastClaimed);
+
+        var userRewards = await blockchain.CroStkSmartContract.methods.calculateRewards(blockchain.account).call();
+        userRewards = userRewards/1e18;
+        userRewards = Number.parseFloat(userRewards).toFixed(3);
+        tokensEarned = userRewards;
+        setTokensEarned(tokensEarned);
+        console.log("Rewards:", userRewards);
+      }
+    }
+
     useEffect(() => {
       getNFTOwnedByUser();
       isApprovedAll();
       getNFTStakedByUser();
+      getTotalNFTStakedByUser();
+      checkAirDropRound();
+      lastClaimedTime();
     }, [blockchain.account]);
 
     
@@ -317,9 +388,7 @@ const StakingPage = () => {
     <div style={{paddingRight:"20px"}} >
     { (isApprovedForAllCGB && isApprovedForAllCPT && isApprovedForAllCMB && isApprovedForAllOG && isApprovedForAllZF)? (
     
-    <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8" }} >
-          <a style={{fontSize:"12px"}} className='newFont mintHover '> Approved</a>
-    </Button>
+    <span> </span>
     ):(
       <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8" }} >
           <a style={{fontSize:"12px"}} className='newFont mintHover 'onClick={safeApprovalAll}> Approve CMB Staking</a>
@@ -473,13 +542,15 @@ const StakingPage = () => {
 
         <div style={{paddingBottom:"20px"}} >
         {value === 0 && <div style={{alignItems:""}}> 
-            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Staked NFTs: 1 </a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Staked NFTs: {sumNftStakedbyUser} </a>
 
-            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Days passed since last withdrawa: 149</a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Days passed since last withdrawal: {daysSinceLastClaimed}</a>
 
-            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >$CBP Earned: 360.33</a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >User's Locker Balance: {userLockedBalance}</a>
 
-            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Current malus: 0%</a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >$CBP Earned: {tokensEarned}</a>
+
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Current malus: {userMulusVal}%</a>
 
             <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Available for withdraw: 360.33 $CPB</a>
 
@@ -493,8 +564,14 @@ const StakingPage = () => {
 
             <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8"  }} >
           <a style={{fontSize:"12px"}} className='newFont mintHover '> Claim All</a>
-          </Button>
+          </Button> &nbsp; 
 
+          { (currentAirdropRound !== userAirdropRound) ? (
+          <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8"  }} >
+          <a style={{fontSize:"12px"}} className='newFont mintHover ' onClick={handleAirdrop}> Claim Airdrop</a>
+          </Button>
+          ) : (<></>)
+          }
         </div>
     </div>
     </div>
