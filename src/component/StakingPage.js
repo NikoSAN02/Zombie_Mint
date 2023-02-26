@@ -333,7 +333,7 @@ const StakingPage = () => {
  
     <div  style={{display:"flex" , justifyContent:"center" }}>
 
-    <div  style={{display:"flex", paddingRight:"10px" , paddingLeft:"20px" }}>
+    <div  style={{ paddingRight:"10px" , paddingLeft:"20px" }}>
 
     <div className='BigBox' style={{ width:"650px" , height:"600px",  overflowY: "scroll"}} >
 
@@ -391,7 +391,7 @@ const StakingPage = () => {
     </div>
 
 {/* STAKED CORNER */}
-  <div style={{paddingLeft:"15px"}}>
+  <div style={{paddingTop:"20px"}}>
 
     <div className='BigBox'  style={{ display:"flex"}} >
     <div style={{width:"650px", height:"600px" , borderRadius:"10px", overflowY: "scroll" }}>
