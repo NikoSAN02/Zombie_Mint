@@ -312,9 +312,7 @@ const StakingPage = () => {
       };  return (
     
     <>
-
-    
-    <div style={{display:"flex" , justifyContent:"center" , paddingTop:"40px"}}>
+    <div style={{display:"flex" , justifyContent:"center" , paddingTop:"50px" , paddingBottom:"50px"}}>
     
     <div style={{paddingRight:"20px"}} >
     { (isApprovedForAllCGB && isApprovedForAllCPT && isApprovedForAllCMB && isApprovedForAllOG && isApprovedForAllZF)? (
@@ -331,15 +329,19 @@ const StakingPage = () => {
 
     </div>
 
+ {/* STAKING CORNER    */}
+ 
+    <div  style={{display:"flex" , justifyContent:"center" }}>
 
-    <div style={{display:"flex" , justifyContent:"center" }}>
+    <div  style={{display:"flex", paddingRight:"10px" , paddingLeft:"20px" }}>
 
-    <div style={{paddingRight:"10px" , paddingLeft:"40px" }}>
+    <div className='BigBox' style={{ width:"650px" , height:"600px",  overflowY: "scroll"}} >
 
-    <div style={{paddingBottom:"20px" , paddingTop:"40px" }} >
-    <div style={{width:"500px",height:"300px", background:"#fff" , borderRadius:"10px", overflowY: "scroll"}}>
-        <a style={{display:"flex" , paddingLeft:"10px" , paddingTop:"10px"}} >Available NFTs</a>
-        <br/> Zombies <br/>
+    <div  style={{ paddingRight:"20px" , paddingLeft:"20px" , borderRadius:"20px"}}>
+
+        <a className='newFont' style={{display:"flex" , justifyContent:"center" , fontSize:"20px"}} >Available NFTs</a>
+
+        <br/> <div style={{paddingTop:"10px"}}>  <a className='newFont'   >Zombies..</a> </div>  <br/>
         {tokenIDsZB.map((tokenID, index) => (
         <>
         <NFTImageStaking key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmSDx92bvTcZeL7WVyjz92e44LqjvqyKZQACsJ4sCEg4uq/${tokenID}`+`.png`} />
@@ -347,7 +349,7 @@ const StakingPage = () => {
         </>
         )
         )}
-        <br/>CGB <br/>
+        <br/> <div style={{paddingTop:"10px"}}> <a className='newFont'   >CGB..</a> </div> <br/>
         {tokenIDsCGB.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmRiiD1GGx31PHDNQXywh5QTwcyE92e1BubsqhFLFPq6aC/${tokenID}`+`.png`} />
@@ -355,7 +357,7 @@ const StakingPage = () => {
         </>
         )
         )}
-        <br/>CMB <br/>
+        <br/> <div style={{paddingTop:"10px"}}> <a className='newFont'   >CMB.. </a> </div> <br/>
         {tokenIDsCMB.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmWaTZfpZDRbdvkQaC7wjph4nhBPetB4N1FqRp11GLVjLJ/${tokenID}`+`.png`} />
@@ -364,7 +366,7 @@ const StakingPage = () => {
         )
         )}
 
-        <br/>OG <br/>
+        <br/> <div style={{paddingTop:"10px"}}> <a className='newFont'   >OG.. </a> </div> <br/>
         {tokenIDsOG.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://bafybeid2qcpqmnet42w7wjl2lurkql2fiscv5ca7quk5utvteu46s2tlau.ipfs.nftstorage.link/`} />
@@ -372,7 +374,7 @@ const StakingPage = () => {
         </>
         )
         )}
-        <br/>CPT <br/>
+        <br/> <div style={{paddingTop:"10px"}}> <a className='newFont'   >CPT.. </a> </div> <br/>
         {tokenIDsCPT.map((tokenID, index) => (
         <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmeBWVydfc6tuEBEP8tCUDA4QBJuPXDePHuTFqJ4hvjx3g/${tokenID}`+`.png`} />
@@ -380,26 +382,32 @@ const StakingPage = () => {
         </>
         )
         )}<br/>
-        <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8"  }} >
+        <div style={{paddingTop:"20px" , paddingBottom:"20px"}}>
+        <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8" }} >
           <a style={{fontSize:"12px"}} className='newFont mintHover ' onClick={stakeNFTs}> Stake</a>
     </Button>
     </div>
     </div>
+    </div>
 
+{/* STAKED CORNER */}
+  <div style={{paddingLeft:"15px"}}>
 
-    <div style={{paddingTop:"20px" , paddingBottom:"40px" }} >
-    <div style={{width:"500px",height:"300px", background:"#fff", borderRadius:"10px", overflowY: "scroll" }}>
-    <a style={{display:"flex" , paddingLeft:"10px" , paddingTop:"10px"}} >Staked NFT Number</a>
+    <div className='BigBox'  style={{ display:"flex"}} >
+    <div style={{width:"650px", height:"600px" , borderRadius:"10px", overflowY: "scroll" }}>
+    <a className='newFont' style={{display:"flex" , justifyContent:"center" , fontSize:"20px" }} >Staked NFT Number</a>
     <br/>
     <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8" }} >
           <a style={{fontSize:"12px"}} className='newFont mintHover '> Unstake All</a>
     </Button>
     <br/>
-    <div style={{ display:"flex", paddingTop:"10px" , paddingLeft:"10px" , paddingBottom:"10px"}} >
-    <a style={{display:"flex" , paddingLeft:"10px" , paddingTop:"10px"}} >Staked NFT</a>
+
+    <a className='newFont' style={{display:"flex" , justifyContent:"center" , fontSize:"20px" , paddingTop:"20px" }} >Staked NFT</a>
+
+    <div style={{ display:"flex", justifyContent:"center", paddingTop:"10px" , paddingLeft:"10px" , paddingBottom:"10px"}} >
     <br/>
     <div>
-    <br/> Zombies <br/>
+    <br/> <div style={{paddingTop:"10px"}}>   <a className='newFont'  > Zombies </a> </div> <br/>
         {stakedTokenIDsZB.map((tokenID, index) => (
         <>
         <NFTImageStaking key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmSDx92bvTcZeL7WVyjz92e44LqjvqyKZQACsJ4sCEg4uq/${tokenID}`+`.png`} />
@@ -407,7 +415,7 @@ const StakingPage = () => {
         </>
         )
         )}
-        <br/>CGB <br/>
+        <br/><div style={{paddingTop:"10px"}}>  <a className='newFont'  > CGB </a> </div> <br/>
         {stakedTokenIDsCGB.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmRiiD1GGx31PHDNQXywh5QTwcyE92e1BubsqhFLFPq6aC/${tokenID}`+`.png`} />
@@ -415,7 +423,7 @@ const StakingPage = () => {
         </>
         )
         )}
-        <br/>CMB <br/>
+        <br/><div style={{paddingTop:"10px"}}>  <a className='newFont'  > CMB </a> </div> <br/>
         {stakedTokenIDsCMB.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmWaTZfpZDRbdvkQaC7wjph4nhBPetB4N1FqRp11GLVjLJ/${tokenID}`+`.png`} />
@@ -424,7 +432,7 @@ const StakingPage = () => {
         )
         )}
 
-        <br/>OG <br/>
+        <br/><div style={{paddingTop:"10px"}}>  <a className='newFont'  > OG </a> </div> <br/>
         {stakedTokenIDsOG.map((tokenID, index) => (
           <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://bafybeid2qcpqmnet42w7wjl2lurkql2fiscv5ca7quk5utvteu46s2tlau.ipfs.nftstorage.link/`} />
@@ -432,7 +440,7 @@ const StakingPage = () => {
         </>
         )
         )}
-        <br/>CPT <br/>
+        <br/> <div style={{paddingTop:"10px"}}> <a className='newFont'  > CPT </a> </div> <br/>
         {stakedTokenIDsCPT.map((tokenID, index) => (
         <>
         <NFTImageStaking  key={tokenID} imageUrl={`https://cmb.mypinata.cloud/ipfs/QmeBWVydfc6tuEBEP8tCUDA4QBJuPXDePHuTFqJ4hvjx3g/${tokenID}`+`.png`} />
@@ -441,7 +449,8 @@ const StakingPage = () => {
         )
         )}<br/>
     </div>
-    </div>
+
+  </div>
 
     
     <div style={{display:"flex" , paddingTop:"10px" , paddingLeft:"10px" , paddingBottom:"10px" , justifyContent:"center"}} >
@@ -452,10 +461,10 @@ const StakingPage = () => {
     </div>
     </div>
     </div>
-
-
-    <div style={{paddingLeft:"10px" , paddingRight:"40px" , paddingTop:"40px"}}>
-        <div style={{width:"500px",height:"640px", background:"#fff", borderRadius:"10px"}}>
+    </div>
+ {/* RIGHT CARD */}
+    <div style={{paddingLeft:"100px"}}>
+        <div className='BigBox'  style={{height:"600px", borderRadius:"10px" }}>
         <Tabs value={value}  onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Your Stats" value={0} />
             <Tab label="Global Stats" value={1} />
@@ -464,17 +473,17 @@ const StakingPage = () => {
 
         <div style={{paddingBottom:"20px"}} >
         {value === 0 && <div style={{alignItems:""}}> 
-            <a style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Staked NFTs: 1 </a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Staked NFTs: 1 </a>
 
-            <a style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Days passed since last withdrawa: 149</a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Days passed since last withdrawa: 149</a>
 
-            <a style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >$CBP Earned: 360.33</a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >$CBP Earned: 360.33</a>
 
-            <a style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Current malus: 0%</a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Current malus: 0%</a>
 
-            <a style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Available for withdraw: 360.33 $CPB</a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Available for withdraw: 360.33 $CPB</a>
 
-            <a style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Total Claimed: 0.00 $CPB</a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Total Claimed: 0.00 $CPB</a>
           </div>
         }
         {value === 1 && <p>This is the content for Tab 2.</p>}
@@ -489,6 +498,7 @@ const StakingPage = () => {
         </div>
     </div>
     </div>
+
     </>
   )
 }

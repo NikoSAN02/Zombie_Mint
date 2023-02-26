@@ -94,3 +94,37 @@
 	transform: rotate(360deg);
 	transition: 1s;
 }
+
+.BigBox{
+	border: 2px solid #000;
+	border-radius: 20px;
+	padding: 10px;
+	transition: 0.5s;
+}
+
+.BigBox:hover{
+	transition: 0.5s;
+	border-radius: 15px;
+}
+
+.HeaderButton{
+	background: #3a3a3a;
+	padding-top: 6px;
+	padding-right: 20px;
+	padding-bottom: 6px;
+	padding-left: 20px;
+	border-radius: 15px;
+	cursor: pointer;
+	border: 2px solid #fff;
+	color: #fff;
+	transition: 1s;
+
+}
+
+.HeaderButton:hover{
+	background: #ef476f;
+	border: 2px solid #3a3a3a;
+	border-radius: 0px;
+	transition: 1s;
+	color: #3a3a3a;
+}

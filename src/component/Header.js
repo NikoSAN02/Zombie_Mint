@@ -141,28 +141,28 @@ function Header() {
 	return (
 
       <header>
-      <AppBar color="primary" position="dynamic">
+      <AppBar style={{background:"#3a3a3a"}} position="dynamic">
 					<Container>
 					
 					<Toolbar style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-            <div style={{ background:"#d8d8d8", display:"flex" , justifyContent:"left" , paddingTop:"5px" , paddingBottom:"5px"}}>
+            <div style={{ display:"flex" , justifyContent:"left" , paddingTop:"5px" , paddingBottom:"5px"}}>
 
-            <img style={{ display:"inline", justifyContent:"center", paddingRight:"100px" }} src={headerlogo} height="50px" ></img>
+            <img className='HeaderLogo' style={{ display:"inline", justifyContent:"center" }} src={headerlogo} height="50px" ></img>
             </div>
             <div>
-            <Typography
+            <Typography className='HeaderButton'
 								variant="h6"
 								onClick={() => navigate("/ZombiePage")}
 							>
-								Zombie Mint
+								<a className='newFont' style={{fontSize:"17px"}}  > Zombie Mint</a>
 							</Typography>
             </div>
             <div>
-            <Typography
+            <Typography className='HeaderButton'
 								variant="h6"
 								onClick={() => navigate("/StakingPage")}
 							>
-								Staking
+								<a className='newFont' style={{fontSize:"17px"}}  > Staking</a>
 							</Typography>
             </div>
           
