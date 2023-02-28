@@ -4,6 +4,8 @@ import { fetchData } from "../redux/data/dataActions";
 import NFTImageStaking from "./NFTImageStaking";
 import { Button, Card, Tab, Tabs } from '@mui/material';
 import { width } from '@mui/system';
+import WithdrawModel from "./WithdrawModel";
+
 
 
 const StakingPage = () => {
@@ -21,11 +23,15 @@ const StakingPage = () => {
     var [daysSinceLastClaimed, setDaysSinceLastClaimed] = useState([]);
     var [userMulusVal, setUserMulusVal] = useState([]);
     var [tokensEarned, setTokensEarned] = useState([]);
+    var [availabletoWithDraw, setAvailabletoWithdraw] = useState([]);
     
     var [collectionArray, setCollectionArray] = useState(null);
     var [tokenIdsArray, setTokenIDsArray] = useState(null);
 
     const stakingContract = process.env.REACT_APP_CRO_STK_CONTRACT_ADD;
+
+    const [withdrawModelPopup, setWithdrawModelPopup] = useState(false);
+
 
     let [tokenIDsCGB, setTokenIDsCGB] = useState([]);
     let [tokenIDsZB, setTokenIDsZB] = useState([]);
@@ -39,6 +45,13 @@ const StakingPage = () => {
     let [stakedTokenIDsOG, setStakedTokenIDsOG] = useState([]);
     let [stakedTokenIDsCPT, setStakedTokenIDsCPT] = useState([]);
 
+    var [totalStakedCGB, setTotalStakedCGB] = useState([]);
+    var [totalStakedCMB, setTotalStakedCMB] = useState([]);
+    var [totalStakedCPT, setTotalStakedCPT] = useState([]);
+    var [totalStakedOG, setTotalStakedOG] = useState([]);
+    var [totalStakedZF, setTotalStakedZF] = useState([]);
+
+    var [stakingCurrentAllocation, setStakingCurrentAllocation] = useState([]);
 
     const collectionZB = '0x5a47420000000000000000000000000000000000000000000000000000000000';
     const collectionCGB = '0x4347420000000000000000000000000000000000000000000000000000000000';
@@ -64,20 +77,92 @@ const StakingPage = () => {
     }
 
     async function getNFTStakedByUser(){
+
       if(blockchain.account && blockchain.CroStkSmartContract)
       {
         stakedTokenIDsZB = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionZB).call();
+        
         setStakedTokenIDsZB(stakedTokenIDsZB);
         stakedTokenIDsCGB = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCGB).call();
+        
         setStakedTokenIDsCGB(stakedTokenIDsCGB);
         stakedTokenIDsCMB = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCMB).call();
+        
         setStakedTokenIDsCMB(stakedTokenIDsCMB);
         stakedTokenIDsOG = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionOG).call();
+        
         setStakedTokenIDsOG(stakedTokenIDsOG);
         stakedTokenIDsCPT = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCPT).call();
+        
         setStakedTokenIDsCPT(stakedTokenIDsCPT);
+       
     }
     unCheckAllCheckboxes();
+    }
+
+    async function unStakeAllNFTs(){
+      
+      let unStakeCol = [];
+      let unstakeToken = [];
+
+      
+      if(stakedTokenIDsZB.length > 0){
+        for (let i = 0; i < stakedTokenIDsZB.length; i++) {
+          unstakeToken.push(stakedTokenIDsZB[i]);
+          unStakeCol.push(collectionZB);
+        }
+      }
+
+      if(stakedTokenIDsCGB.length > 0){
+        for (let i = 0; i < stakedTokenIDsCGB.length; i++) {
+          unstakeToken.push(stakedTokenIDsCGB[i]);
+          unStakeCol.push(collectionCGB);
+        }
+      }
+
+      if(stakedTokenIDsCMB.length > 0){
+        for (let i = 0; i < stakedTokenIDsCMB.length; i++) {
+          unstakeToken.push(stakedTokenIDsCMB[i]);
+          unStakeCol.push(collectionCMB);
+        }
+      }
+
+      if(stakedTokenIDsOG.length > 0){
+        for (let i = 0; i < stakedTokenIDsOG.length; i++) {
+          unstakeToken.push(stakedTokenIDsOG[i]);
+          unStakeCol.push(collectionOG);
+        }
+      }
+
+      if(stakedTokenIDsCPT.length > 0){
+        for (let i = 0; i < stakedTokenIDsCPT.length; i++) {
+          unstakeToken.push(stakedTokenIDsCPT[i]);
+          unStakeCol.push(collectionCPT);
+        }
+      }
+      console.log(unstakeToken);
+      console.log(unStakeCol);
+      
+      if(unstakeToken.length > 35)
+      {
+        alert("Sorry you have more than 35 NFTs staked. You need to unstake it using the checkboxes");
+      }
+      else{
+        const gasPriceVal = 585000;
+        await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).send({
+          gas: gasPriceVal,
+          from: blockchain.account,
+        }).once("error", (err) => {
+          console.log(err);
+          alert("Error occured while Unstaking");
+        })
+        .then((receipt) => {
+          alert("Unstaked Successful");
+          
+        });
+      }
+      console.log(unstakeToken);
+      console.log(unStakeCol);
     }
 
     //uncheck all the checkboxes on refresh
@@ -209,14 +294,11 @@ const StakingPage = () => {
 
       const gasPriceVal = 585000;
 
-      if(collectionArray.length == 0)
+      if(collectionArray.length === 0)
       {
         alert("Select atleast 1 NFT to Unstake");
       }
       else{
-
-        console.log(collectionArray.toString());
-        console.log(tokenIdsArray.toString());
 
        await blockchain.CroStkSmartContract.methods.unstakePrimate(collectionArray, tokenIdsArray).send({
           gas: gasPriceVal,
@@ -363,7 +445,66 @@ const StakingPage = () => {
         userRewards = Number.parseFloat(userRewards).toFixed(3);
         tokensEarned = userRewards;
         setTokensEarned(tokensEarned);
+        availabletoWithDraw = (tokensEarned + userLockedBalance)/10;
+        availabletoWithDraw = availabletoWithDraw.toFixed(3);
+        setAvailabletoWithdraw(availabletoWithDraw);
         console.log("Rewards:", userRewards);
+      }
+    }
+
+    async function claimRewards(walletType){
+
+      if(blockchain.account && blockchain.CroStkSmartContract){
+        var userRewards = await blockchain.CroStkSmartContract.methods.claimRewards(walletType)
+        .send({
+          gas: "185000",
+          from: blockchain.account,
+        });
+        lastClaimedTime();  
+      }
+    }
+
+    async function totalNftStakedForEachCollection(){
+      if(blockchain.account && blockchain.CGBSmartContract)
+      {
+        totalStakedCGB = await blockchain.CGBSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        setTotalStakedCGB(totalStakedCGB);
+      }
+      if(blockchain.account && blockchain.CMBSmartContract)
+      {
+        totalStakedCMB = await blockchain.CMBSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        setTotalStakedCMB(totalStakedCMB);
+      }
+      if(blockchain.account && blockchain.CPTSmartContract)
+      {
+        totalStakedCPT = await blockchain.CPTSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        setTotalStakedCPT(totalStakedCPT);
+      }
+      if(blockchain.account && blockchain.OGSmartContract)
+      {
+        totalStakedOG = await blockchain.OGSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        setTotalStakedOG(totalStakedOG);
+      }
+      if(blockchain.account && blockchain.ZFSmartContract)
+      {
+        totalStakedZF = await blockchain.ZFSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        setTotalStakedZF(totalStakedZF);
+      }
+    }
+
+    async function getStakingCurrentAllocation(){
+      if(blockchain.account && blockchain.CroLocSmartContract){
+        var maxDistribution = await blockchain.CroLocSmartContract.methods.MAX_DISTRIBUTION().call();
+        var totalDistributed = await blockchain.CroLocSmartContract.methods.totalDistributed().call();
+        maxDistribution = maxDistribution/1e18;
+        maxDistribution = Number.parseFloat(maxDistribution).toFixed(1);
+        totalDistributed = totalDistributed/1e18;
+        totalDistributed = Number.parseFloat(totalDistributed).toFixed(1);
+        stakingCurrentAllocation = maxDistribution - totalDistributed;
+        setStakingCurrentAllocation(stakingCurrentAllocation);
+        console.log(maxDistribution);
+        console.log(totalDistributed);
+       
       }
     }
 
@@ -374,6 +515,8 @@ const StakingPage = () => {
       getTotalNFTStakedByUser();
       checkAirDropRound();
       lastClaimedTime();
+      totalNftStakedForEachCollection();
+      getStakingCurrentAllocation();
     }, [blockchain.account]);
 
     
@@ -391,7 +534,7 @@ const StakingPage = () => {
     <span> </span>
     ):(
       <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8" }} >
-          <a style={{fontSize:"12px"}} className='newFont mintHover 'onClick={safeApprovalAll}> Approve CMB Staking</a>
+          <a style={{fontSize:"12px"}} className='newFont mintHover 'onClick={safeApprovalAll}> Approve Staking</a>
     </Button>
     )}
     </div>
@@ -467,7 +610,7 @@ const StakingPage = () => {
     <a className='newFont' style={{display:"flex" , justifyContent:"center" , fontSize:"20px" }} >Staked NFT Number</a>
     <br/>
     <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8" }} >
-          <a style={{fontSize:"12px"}} className='newFont mintHover '> Unstake All</a>
+          <a style={{fontSize:"12px"}} className='newFont mintHover ' onClick={unStakeAllNFTs}> Unstake All</a>
     </Button>
     <br/>
 
@@ -537,7 +680,6 @@ const StakingPage = () => {
         <Tabs value={value}  onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Your Stats" value={0} />
             <Tab label="Global Stats" value={1} />
-            <Tab label="Withdraw" value={2} />
         </Tabs>
 
         <div style={{paddingBottom:"20px"}} >
@@ -552,18 +694,31 @@ const StakingPage = () => {
 
             <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Current malus: {userMulusVal}%</a>
 
-            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Available for withdraw: 360.33 $CPB</a>
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Available for withdraw at the month's end: {availabletoWithDraw} $CPB</a>
 
-            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Total Claimed: 0.00 $CPB</a>
           </div>
         }
-        {value === 1 && <p>This is the content for Tab 2.</p>}
-        {value === 2 && <p>This is the content for Tab 3.</p>}
-      </div>
+        {value === 1 && <div style={{alignItems:""}}> 
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Staking Current Allocation: {stakingCurrentAllocation} </a>
 
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Total NFT staked for each collection: <br/>
+            CGB: {totalStakedCGB} <br/>
+            CMB: {totalStakedCMB} <br/>
+            CPT: {totalStakedCPT} <br/>
+            OG: {totalStakedOG} <br/>
+            ZF: {totalStakedZF} <br/>            
+            </a>
+
+            <a className='newFont' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px"}} >Current airdrop round: {currentAirdropRound}</a>
+
+          </div>}
+      </div>
+      <div className='whole-modal'>
+           <WithdrawModel trigger={withdrawModelPopup} setTrigger={setWithdrawModelPopup} claimRewards={claimRewards}></WithdrawModel>
+     </div>
 
             <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8"  }} >
-          <a style={{fontSize:"12px"}} className='newFont mintHover '> Claim All</a>
+          <a style={{fontSize:"12px"}} className='newFont mintHover ' onClick={ () => setWithdrawModelPopup(true)}> Claim All</a>
           </Button> &nbsp; 
 
           { (currentAirdropRound !== userAirdropRound) ? (
@@ -575,7 +730,7 @@ const StakingPage = () => {
         </div>
     </div>
     </div>
-
+    
     </>
   )
 }
