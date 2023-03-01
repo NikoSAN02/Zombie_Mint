@@ -148,7 +148,7 @@ const StakingPage = () => {
         alert("Sorry you have more than 35 NFTs staked. You need to unstake it using the checkboxes");
       }
       else{
-        const gasPriceVal = 585000;
+        const gasPriceVal = 1285000;
         await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).send({
           gas: gasPriceVal,
           from: blockchain.account,
@@ -163,6 +163,10 @@ const StakingPage = () => {
       }
       console.log(unstakeToken);
       console.log(unStakeCol);
+      unCheckAllCheckboxes();
+      getNFTOwnedByUser();
+      getNFTStakedByUser();
+      getTotalNFTStakedByUser();
     }
 
     //uncheck all the checkboxes on refresh
@@ -256,7 +260,7 @@ const StakingPage = () => {
 
         getDetailsOfCheckbox();
 
-        const gasPriceVal = 585000;
+        const gasPriceVal = 1285000;
 
         if(collectionArray.length == 0)
         {
@@ -292,7 +296,7 @@ const StakingPage = () => {
 
       getDetailsOfCheckboxUnstaking();
 
-      const gasPriceVal = 585000;
+      const gasPriceVal = 1285000;
 
       if(collectionArray.length === 0)
       {
