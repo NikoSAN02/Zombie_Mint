@@ -180,6 +180,10 @@ body {
 	filter: drop-shadow(2px 2px 1px #ef476f);
 }
 
+.textShadow{
+	filter: drop-shadow(2px 2px 1px #ef476f);
+}
+
 .HeaderLogo{
 	background-color: #6d6d6d;
 	border: 2px solid #06d6a0;
