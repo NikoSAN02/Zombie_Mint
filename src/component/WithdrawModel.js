@@ -7,8 +7,8 @@ export default function WithdrawModal(props) {
 	const { claimRewards } = props;
 	return (props.trigger)? (
 		<div>
-		<p className='written' >Select a wallet to withdraw</p>
-	  <div className="two-wallets" >
+		<p className="written2" style={{fontSize:"20px"}} >Select a wallet to withdraw</p>
+	  <div >
 		  <Button style={{  padding:"5px" }}
 		    onClick={() => {
                 claimRewards(false);
@@ -27,8 +27,8 @@ export default function WithdrawModal(props) {
 		      <span className="wallet-defi" > Withdraw to Wallet</span>
 		</Button>
 
-		<div className="CloseButt" >
-		<Button style={{fontSize:"22px" , fontWeight:"900" , color:"#06d6a0"}} onClick={() => props.setTrigger(false)}>X</Button>
+		<div  style={{paddingTop:"10px" , paddingBottom:"10px"}} >
+		<Button className="CloseButton" style={{ background:"#ef476f", fontSize:"15px" , fontWeight:"900" , color:"#06d6a0"}} onClick={() => props.setTrigger(false)}>X</Button>
 		</div>
 
 		</div>
