@@ -1,6 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { fetchData } from "../redux/data/dataActions";
+import { useSelector } from "react-redux";
 import NFTImageStaking from "./NFTImageStaking";
 import { Button, Card, Tab, Tabs } from '@mui/material';
 import { width } from '@mui/system';
@@ -59,9 +58,11 @@ const StakingPage = () => {
     const collectionOG = '0x4f47000000000000000000000000000000000000000000000000000000000000';
     const collectionCPT = '0x4350540000000000000000000000000000000000000000000000000000000000';
 
+    //function to get the NFTs of each collection owned by the user
     async function getNFTOwnedByUser(){
       if(blockchain.account && blockchain.CroStkSmartContract)
       {
+        try{
         tokenIDsZB = await blockchain.CroStkSmartContract.methods.tokensOfWallet(blockchain.account, collectionZB).call();
         setTokenIDsZB(tokenIDsZB);
         tokenIDsCGB = await blockchain.CroStkSmartContract.methods.tokensOfWallet(blockchain.account, collectionCGB).call();
@@ -72,14 +73,20 @@ const StakingPage = () => {
         setTokenIDsOG(tokenIDsOG);
         const tokenIDsCPT = await blockchain.CroStkSmartContract.methods.tokensOfWallet(blockchain.account, collectionCPT).call();
         setTokenIDsCPT(tokenIDsCPT);
+      }catch (err)
+      {
+        console.log(err);
+      }
     }
     unCheckAllCheckboxes();
     }
 
+    //Get the info of NFTs staked by the user
     async function getNFTStakedByUser(){
 
       if(blockchain.account && blockchain.CroStkSmartContract)
       {
+        try{
         stakedTokenIDsZB = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionZB).call();
         
         setStakedTokenIDsZB(stakedTokenIDsZB);
@@ -95,11 +102,15 @@ const StakingPage = () => {
         stakedTokenIDsCPT = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCPT).call();
         
         setStakedTokenIDsCPT(stakedTokenIDsCPT);
-       
+      }catch(err)
+      {
+        console.log(err);
+      }
     }
     unCheckAllCheckboxes();
     }
 
+    //unstake all the NFTs using the unstake all button
     async function unStakeAllNFTs(){
       
       let unStakeCol = [];
@@ -140,15 +151,14 @@ const StakingPage = () => {
           unStakeCol.push(collectionCPT);
         }
       }
-      console.log(unstakeToken);
-      console.log(unStakeCol);
       
       if(unstakeToken.length > 35)
       {
         alert("Sorry you have more than 35 NFTs staked. You need to unstake it using the checkboxes");
       }
       else{
-        const gasPriceVal = 1285000;
+        var gasPriceVal = 1285000;
+        gasPriceVal =   await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).estimateGas({from: blockchain.account});
         await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).send({
           gas: gasPriceVal,
           from: blockchain.account,
@@ -161,8 +171,7 @@ const StakingPage = () => {
           
         });
       }
-      console.log(unstakeToken);
-      console.log(unStakeCol);
+
       unCheckAllCheckboxes();
       getNFTOwnedByUser();
       getNFTStakedByUser();
@@ -180,6 +189,7 @@ const StakingPage = () => {
       });
     }
 
+    //check if all the contracts are approved
     async function isApprovedAll()
     {
       if(blockchain.account && blockchain.CGBSmartContract)
@@ -209,58 +219,85 @@ const StakingPage = () => {
       }
     }
 
+    //approve all the contracts to enable staking
 
     async function safeApprovalAll(){
       
       if(!isApprovedForAllCGB){
+        try{
         var safeApprovalCGB = await blockchain.CGBSmartContract.methods.setApprovalForAll(stakingContract,true)
         .send({
           gas: "185000",
           from: blockchain.account,
         });
+      }catch(err)
+      {
+        console.log(err);
+      }
       }
 
       if(!isApprovedForAllCMB){
-        var safeApprovalCMB = await blockchain.CMBSmartContract.methods.setApprovalForAll(stakingContract,true)
-        .send({
-          gas: "185000",
-          from: blockchain.account,
-        });
+        try{
+          var safeApprovalCMB = await blockchain.CMBSmartContract.methods.setApprovalForAll(stakingContract,true)
+          .send({
+            gas: "185000",
+            from: blockchain.account,
+          });
+        }catch(err)
+        {
+          console.log(err);
+        }
       }
 
       if(!isApprovedForAllCPT){
-        var safeApprovalCPT = await blockchain.CPTSmartContract.methods.setApprovalForAll(stakingContract,true)
-        .send({
-          gas: "185000",
-          from: blockchain.account,
-        });
+        try{
+          var safeApprovalCPT = await blockchain.CPTSmartContract.methods.setApprovalForAll(stakingContract,true)
+          .send({
+            gas: "185000",
+            from: blockchain.account,
+          });
+        }catch(err)
+        {
+          console.log(err);
+        }
       }
 
       if(!isApprovedForAllOG){
-        var safeApprovalOG = await blockchain.OGSmartContract.methods.setApprovalForAll(stakingContract,true)
-        .send({
-          gas: "185000",
-          from: blockchain.account,
-        });
+        try{
+          var safeApprovalOG = await blockchain.OGSmartContract.methods.setApprovalForAll(stakingContract,true)
+          .send({
+            gas: "185000",
+            from: blockchain.account,
+          });
+        }catch(err)
+        {
+          console.log(err);
+        }
       }
 
       if(!isApprovedForAllZF){
-        var safeApprovalZF = await blockchain.ZFSmartContract.methods.setApprovalForAll(stakingContract,true)
-        .send({
-          gas: "185000",
-          from: blockchain.account,
-        });
+        try{
+          var safeApprovalZF = await blockchain.ZFSmartContract.methods.setApprovalForAll(stakingContract,true)
+          .send({
+            gas: "185000",
+            from: blockchain.account,
+          });
+        }catch(err)
+        {
+          console.log(err);
+        }
       }
       isApprovedAll();
     }
   
+    //stake NFts
     async function stakeNFTs(){
 
       if(isApprovedForAllCGB && isApprovedForAllCPT && isApprovedForAllCMB && isApprovedForAllOG && isApprovedForAllZF){
 
         getDetailsOfCheckbox();
 
-        const gasPriceVal = 1285000;
+        var gasPriceVal = 1285000;
 
         if(collectionArray.length == 0)
         {
@@ -268,9 +305,7 @@ const StakingPage = () => {
         }
         else{
 
-          console.log(collectionArray.toString());
-          console.log(tokenIdsArray.toString());
-
+        gasPriceVal =   await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).estimateGas({from: blockchain.account});
         await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).send({
             gas: gasPriceVal,
             from: blockchain.account,
@@ -288,22 +323,24 @@ const StakingPage = () => {
         getTotalNFTStakedByUser()
     }
     else{
-      alert("Please approve all first");
+      alert("Please approve all contracts first");
     }
     }
 
+    //unstake NFTs
     async function unStakeNFTs(){
 
       getDetailsOfCheckboxUnstaking();
 
-      const gasPriceVal = 1285000;
+      var gasPriceVal = 1285000;
 
       if(collectionArray.length === 0)
       {
         alert("Select atleast 1 NFT to Unstake");
       }
       else{
-
+      
+        gasPriceVal =   await blockchain.CroStkSmartContract.methods.unstakePrimate(collectionArray, tokenIdsArray).estimateGas({from: blockchain.account});
        await blockchain.CroStkSmartContract.methods.unstakePrimate(collectionArray, tokenIdsArray).send({
           gas: gasPriceVal,
           from: blockchain.account,
@@ -321,6 +358,7 @@ const StakingPage = () => {
       getTotalNFTStakedByUser()
     }
 
+    //add the checked NFTs to an array
     function getDetailsOfCheckbox() {
       const selectedCheckboxes = document.querySelectorAll("input[type=checkbox]:checked");
       const selectedCollections = {};
@@ -351,9 +389,9 @@ const StakingPage = () => {
     
       setCollectionArray(collectionArray);
       setTokenIDsArray(tokenIdsArray);
-      console.log(collectionArray, tokenIdsArray);
     }
 
+    //get the details of all checked NFTs for unstaking and storing it in an array to unstake
     function getDetailsOfCheckboxUnstaking() {
       const selectedCheckboxes = document.querySelectorAll("input[type=checkbox]:checked");
       const selectedCollections = {};
@@ -384,10 +422,10 @@ const StakingPage = () => {
     
       setCollectionArray(collectionArray);
       setTokenIDsArray(tokenIdsArray);
-      console.log(collectionArray, tokenIdsArray);
     }
 
 
+    //get all the NFTs staked by the user to display the count on screen.
     async function getTotalNFTStakedByUser(){
       if(blockchain.account && blockchain.CroStkSmartContract)
       {
@@ -402,6 +440,7 @@ const StakingPage = () => {
     unCheckAllCheckboxes();
     }
 
+    //Check airdrop round and other user staking info
     async function checkAirDropRound(){
       if(blockchain.account && blockchain.CroLocSmartContract)
       {
@@ -412,12 +451,12 @@ const StakingPage = () => {
               userAirdropRound = userDetails.airdropRound;
               setUserAirdropRound(userAirdropRound);
               userLockedBalance = userDetails.lockedBalance;
+              userLockedBalance = userLockedBalance/1e18;
+              userLockedBalance = Number.parseFloat(userLockedBalance).toFixed(3);
+
               setUserLockedBalance(userLockedBalance);
 
-              console.log(userAirdropRound); 
-              console.log(userDetails);
               const mulusValue = await blockchain.CroLocSmartContract.methods.getUserTaxAmount(blockchain.account).call();
-              console.log(mulusValue.taxPercentage);
               userMulusVal = mulusValue.taxPercentage;
               setUserMulusVal(userMulusVal);
             }
@@ -428,16 +467,17 @@ const StakingPage = () => {
       }
     }
 
+
     async function handleAirdrop() {
       const resp = await blockchain.CroLocSmartContract.methods.airdropRound().call();
-      console.log(resp);
       checkAirDropRound();
     } 
 
+    //check last claimed and user rewards.
     async function lastClaimedTime(){
       if(blockchain.account && blockchain.CroStkSmartContract){
         const lastClaimedTimeStamp = await blockchain.CroStkSmartContract.methods.stakers(blockchain.account).call();
-        console.log(lastClaimedTimeStamp.lastClaimedTimestamp);
+
         let currentTimestamp = Math.floor(Date.now() / 1000);
         let difference = currentTimestamp - lastClaimedTimeStamp.lastClaimedTimestamp;
 
@@ -452,19 +492,23 @@ const StakingPage = () => {
         availabletoWithDraw = (tokensEarned + userLockedBalance)/10;
         availabletoWithDraw = availabletoWithDraw.toFixed(3);
         setAvailabletoWithdraw(availabletoWithDraw);
-        console.log("Rewards:", userRewards);
       }
     }
 
     async function claimRewards(walletType){
 
       if(blockchain.account && blockchain.CroStkSmartContract){
-        var userRewards = await blockchain.CroStkSmartContract.methods.claimRewards(walletType)
-        .send({
-          gas: "185000",
-          from: blockchain.account,
-        });
-        lastClaimedTime();  
+        try{
+          var userRewards = await blockchain.CroStkSmartContract.methods.claimRewards(walletType)
+          .send({
+            gas: "185000",
+            from: blockchain.account,
+          });
+          lastClaimedTime();
+        }catch(err)
+        {
+          console.log(err);
+        }  
       }
     }
 
@@ -506,9 +550,6 @@ const StakingPage = () => {
         totalDistributed = Number.parseFloat(totalDistributed).toFixed(1);
         stakingCurrentAllocation = maxDistribution - totalDistributed;
         setStakingCurrentAllocation(stakingCurrentAllocation);
-        console.log(maxDistribution);
-        console.log(totalDistributed);
-       
       }
     }
 
