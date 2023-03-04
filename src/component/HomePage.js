@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../redux/data/dataActions";
 import NFTImage from "./NFTImage";
 import BigNumber from "bignumber.js";
+import bgImage from "../styles/backgroundImage3.png"
 
 import graybg from "../Images/GrayBackground.png"
 import { fontSize } from '@mui/system';
@@ -139,8 +140,9 @@ const HomePage = () => {
   }, [blockchain.account]);
 
   return (
+    <body style={{background: `url(${bgImage}) no-repeat center center fixed`, backgroundSize: 'cover', height: '100vh'}}>
     <main >
-
+      
       <div className='Notes desc  '>
 
       <label className=' newFont' > To receive a Zombie you must have 3 gorillas from either Aqua, Ignis or Terra. (Excluding Mafia) + \
@@ -211,9 +213,9 @@ const HomePage = () => {
       }
 
 
-
-
-    </main>
+</main>
+  </body>
+   
   );
 }
 
