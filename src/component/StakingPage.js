@@ -4,6 +4,7 @@ import NFTImageStaking from "./NFTImageStaking";
 import { Button, Card, Tab, Tabs } from '@mui/material';
 import { width } from '@mui/system';
 import WithdrawModel from "./WithdrawModel";
+import crotopia_image from "../Images/Crotopia_Image.png";
 
 
 
@@ -626,7 +627,7 @@ const StakingPage = () => {
         <br/> <div style={{paddingTop:"10px"}}> <a className='newFont textShadow'   >OG.. </a> </div> <br/>
         {tokenIDsOG.map((tokenID, index) => (
           <>
-        <NFTImageStaking  key={tokenID} imageUrl={`https://bafybeid2qcpqmnet42w7wjl2lurkql2fiscv5ca7quk5utvteu46s2tlau.ipfs.nftstorage.link/`} />
+        <NFTImageStaking  key={tokenID} imageUrl={crotopia_image} />
         <input className='checkit' type="checkbox" value={tokenID} data-staking="STAKING" data-collection={collectionOG}/>
         </>
         )
@@ -692,7 +693,7 @@ const StakingPage = () => {
         <br/><div style={{paddingTop:"10px"}}>  <a className=' textShadow newFont'  > OG </a> </div> <br/>
         {stakedTokenIDsOG.map((tokenID, index) => (
           <>
-        <NFTImageStaking  key={tokenID} imageUrl={`https://bafybeid2qcpqmnet42w7wjl2lurkql2fiscv5ca7quk5utvteu46s2tlau.ipfs.nftstorage.link/`} />
+        <NFTImageStaking  key={tokenID} imageUrl={crotopia_image} />
         <input className='checkit' type="checkbox" value={tokenID} data-staking="UNSTAKING" data-collection={collectionOG}/>
         </>
         )
@@ -722,7 +723,8 @@ const StakingPage = () => {
  {/* RIGHT CARD */}
     <div style={{paddingLeft:"100px"}}>
         <div className='BigBox'  style={{height:"800px", width:"400px", borderRadius:"10px" }}>
-        <Tabs value={value}  onChange={handleChange} aria-label="basic tabs example">
+        <Tabs value={value} textColor="secondary" indicatorColor="secondary"
+ onChange={handleChange} aria-label="basic tabs example" >
             <Tab label="Your Stats" value={0} />
             <Tab label="Global Stats" value={1} />
         </Tabs>
