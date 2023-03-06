@@ -64,7 +64,7 @@ export const connectMM = () => {
         });
         
         // const NetworkData = await SmartContract.networks[networkId];
-          if (networkId == 338) {
+          if (networkId == 25) {
             const SmartContractObjCGB = new Web3EthContract(
               CGBSmartContract,
               //"0xc843f18d5605654391e7eDBEa250f6838C3e8936" mainnet
@@ -166,17 +166,17 @@ export const connectWC = () => {
 
     var accountWC = "";
     const connector = new DeFiWeb3Connector({
-    /*  supportedChainIds: [25],
+      supportedChainIds: [25],
       rpc: {
         [25]:
         "https://evm.cronos.org/",
-      },*/
-      supportedChainIds: [338],
+      },
+     /* supportedChainIds: [338],
       rpc: {
         [338]:
         "https://evm-t3.cronos.org/",
       },
-
+    */
       pollingInterval: 15000,
     });
     await connector.activate();
@@ -191,7 +191,7 @@ export const connectWC = () => {
       method: "net_version",
     });
     
-    if (networkId  == 338) {
+    if (networkId  == 25) {
       const SmartContractObjCGB = new Web3EthContract(
         CGBSmartContract,
         //"0xc843f18d5605654391e7eDBEa250f6838C3e8936" mainnet

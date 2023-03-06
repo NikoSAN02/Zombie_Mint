@@ -24,7 +24,7 @@ import walltlogo from '../Images/walletlogo.png'
 var networkName = "CRO";
 
 const networks = {
-/*	CRO: {
+	CRO: {
 		chainId: `0x${Number(25).toString(16)}`,
         chainName: "Cronos Mainnet Beta",
         nativeCurrency: {
@@ -35,7 +35,7 @@ const networks = {
         rpcUrls: ["https://evm.cronos.org/"],
         blockExplorerUrls: ["https://cronoscan.com/"]
       },
-      */
+      /*
       CRO: {
         chainId: `0x${Number(338).toString(16)}`,
             chainName: "Cronos Testnet",
@@ -46,7 +46,7 @@ const networks = {
             },
             rpcUrls: ["https://evm-t3.cronos.org/"],
             blockExplorerUrls: ["https://testnet.cronoscan.com/"]
-          },
+          },*/
 };
 
 const changeNetwork = async ({ networkName, setError }) => {

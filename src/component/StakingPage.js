@@ -5,6 +5,8 @@ import { Button, Card, Tab, Tabs } from '@mui/material';
 import { width } from '@mui/system';
 import WithdrawModel from "./WithdrawModel";
 import crotopia_image from "../Images/Crotopia_Image.png";
+import bgImageStk from "../Images/Background_Staking_1.png"
+
 
 
 
@@ -158,19 +160,24 @@ const StakingPage = () => {
         alert("Sorry you have more than 35 NFTs staked. You need to unstake it using the checkboxes");
       }
       else{
-        var gasPriceVal = 1285000;
-        gasPriceVal =   await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).estimateGas({from: blockchain.account});
-        await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).send({
-          gas: gasPriceVal,
-          from: blockchain.account,
-        }).once("error", (err) => {
-          console.log(err);
-          alert("Error occured while Unstaking");
-        })
-        .then((receipt) => {
-          alert("Unstaked Successful");
-          
-        });
+          if(blockchain.account && blockchain.CroStkSmartContract){
+          var gasPriceVal = 1285000;
+          gasPriceVal =   await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).estimateGas({from: blockchain.account});
+          await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).send({
+            gas: gasPriceVal,
+            from: blockchain.account,
+          }).once("error", (err) => {
+            console.log(err);
+            alert("Error occured while Unstaking");
+          })
+          .then((receipt) => {
+            alert("Unstaked Successful");
+            
+          });
+        }
+        else{
+          alert("Please connect your wallet first");
+        }
       }
 
       unCheckAllCheckboxes();
@@ -223,6 +230,8 @@ const StakingPage = () => {
     //approve all the contracts to enable staking
 
     async function safeApprovalAll(){
+
+      if(blockchain.account){
       
       if(!isApprovedForAllCGB){
         try{
@@ -288,45 +297,51 @@ const StakingPage = () => {
           console.log(err);
         }
       }
+    }else{
+      alert("Please connect your wallet first");
+    }
       isApprovedAll();
     }
   
     //stake NFts
     async function stakeNFTs(){
+      if(blockchain.account){
+        if(isApprovedForAllCGB && isApprovedForAllCPT && isApprovedForAllCMB && isApprovedForAllOG && isApprovedForAllZF){
 
-      if(isApprovedForAllCGB && isApprovedForAllCPT && isApprovedForAllCMB && isApprovedForAllOG && isApprovedForAllZF){
+          getDetailsOfCheckbox();
 
-        getDetailsOfCheckbox();
+          var gasPriceVal = 1285000;
 
-        var gasPriceVal = 1285000;
+          if(collectionArray.length == 0)
+          {
+            alert("select atleast 1 NFT to stake");
+          }
+          else{
 
-        if(collectionArray.length == 0)
-        {
-          alert("select atleast 1 NFT to stake");
-        }
-        else{
-
-        gasPriceVal =   await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).estimateGas({from: blockchain.account});
-        await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).send({
-            gas: gasPriceVal,
-            from: blockchain.account,
-          }).once("error", (err) => {
-            console.log(err);
-            alert("Error occured while staking");
-          })
-          .then((receipt) => {
-            alert("Staked Successful");
-            
-          });
-        }
-        getNFTOwnedByUser();
-        getNFTStakedByUser();
-        getTotalNFTStakedByUser()
+          gasPriceVal =   await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).estimateGas({from: blockchain.account});
+          await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).send({
+              gas: gasPriceVal,
+              from: blockchain.account,
+            }).once("error", (err) => {
+              console.log(err);
+              alert("Error occured while staking");
+            })
+            .then((receipt) => {
+              alert("Staked Successful");
+              
+            });
+          }
+          getNFTOwnedByUser();
+          getNFTStakedByUser();
+          getTotalNFTStakedByUser()
+      }
+      else{
+        alert("Please approve all contracts first");
+      }
+    }else{
+      alert("Please connect your wallet first");
     }
-    else{
-      alert("Please approve all contracts first");
-    }
-    }
+  }
 
     //unstake NFTs
     async function unStakeNFTs(){
@@ -340,6 +355,7 @@ const StakingPage = () => {
         alert("Select atleast 1 NFT to Unstake");
       }
       else{
+        if(blockchain.account && blockchain.CroStkSmartContract){
       
         gasPriceVal =   await blockchain.CroStkSmartContract.methods.unstakePrimate(collectionArray, tokenIdsArray).estimateGas({from: blockchain.account});
        await blockchain.CroStkSmartContract.methods.unstakePrimate(collectionArray, tokenIdsArray).send({
@@ -353,7 +369,8 @@ const StakingPage = () => {
           alert("Unstaked Successful");
           
         });
-      }
+      }else{ alert("Please connect your wallet first");}
+    }
       getNFTOwnedByUser();
       getNFTStakedByUser();
       getTotalNFTStakedByUser()
@@ -470,8 +487,10 @@ const StakingPage = () => {
 
 
     async function handleAirdrop() {
-      const resp = await blockchain.CroLocSmartContract.methods.airdropRound().call();
-      checkAirDropRound();
+      if(blockchain.account && blockchain.CroLocSmartContract){
+        const resp = await blockchain.CroLocSmartContract.methods.airdropRound().call();
+        checkAirDropRound();
+      }else{alert("Please connect your wallet");}
     } 
 
     //check last claimed and user rewards.
@@ -480,10 +499,15 @@ const StakingPage = () => {
         const lastClaimedTimeStamp = await blockchain.CroStkSmartContract.methods.stakers(blockchain.account).call();
 
         let currentTimestamp = Math.floor(Date.now() / 1000);
-        let difference = currentTimestamp - lastClaimedTimeStamp.lastClaimedTimestamp;
-
-        daysSinceLastClaimed = Math.floor(difference / 86400);
-        setDaysSinceLastClaimed(daysSinceLastClaimed);
+        if(lastClaimedTimeStamp.lastClaimedTimestamp >0 ){
+          let difference = currentTimestamp - lastClaimedTimeStamp.lastClaimedTimestamp;
+          console.log(difference);
+          daysSinceLastClaimed = Math.floor(difference / 86400);
+          setDaysSinceLastClaimed(daysSinceLastClaimed);
+        }else{
+          daysSinceLastClaimed = 0;
+          setDaysSinceLastClaimed(daysSinceLastClaimed);
+        }
 
         var userRewards = await blockchain.CroStkSmartContract.methods.calculateRewards(blockchain.account).call();
         userRewards = userRewards/1e18;
@@ -510,7 +534,7 @@ const StakingPage = () => {
         {
           console.log(err);
         }  
-      }
+      }else{alert("Please connect your wallet");}
     }
 
     async function totalNftStakedForEachCollection(){
@@ -570,7 +594,7 @@ const StakingPage = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };  return (
-    
+        <body style={{background: `url(${bgImageStk}) no-repeat center center fixed`, backgroundSize: 'cover', height: '100vh'}}>
     <>
     <div style={{display:"flex" , justifyContent:"center" , paddingTop:"50px" , paddingBottom:"50px"}}>
     
@@ -723,7 +747,7 @@ const StakingPage = () => {
  {/* RIGHT CARD */}
     <div style={{paddingLeft:"100px"}}>
         <div className='BigBox'  style={{height:"800px", width:"400px", borderRadius:"10px" }}>
-        <Tabs value={value} textColor="secondary" indicatorColor="secondary"
+        <Tabs value={value} textColor="#000000" indicatorColor="#000000"
  onChange={handleChange} aria-label="basic tabs example" >
             <Tab label="Your Stats" value={0} />
             <Tab label="Global Stats" value={1} />
@@ -763,13 +787,15 @@ const StakingPage = () => {
       <div className='whole-modal2'>
            <WithdrawModel trigger={withdrawModelPopup} setTrigger={setWithdrawModelPopup} claimRewards={claimRewards}></WithdrawModel>
      </div>
-
-        <div style={{display:"flex" , justifyContent:"center" , paddingTop:"10px" , paddingBottom:"10px"}} >
+     
+        {(daysSinceLastClaimed >= 30) ? (
+          <div style={{display:"flex" , justifyContent:"center" , paddingTop:"10px" , paddingBottom:"10px"}} >
             <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8"  }} >
           <a style={{fontSize:"12px"}} className='newFont mintHover ' onClick={ () => setWithdrawModelPopup(true)}> Claim All</a>
           </Button> &nbsp; 
           </div>
-
+        ) : (<></>)
+        }
           <div style={{display:"flex" , justifyContent:"center" , paddingTop:"10px" , paddingBottom:"10px"}} >
           { (currentAirdropRound !== userAirdropRound) ? (
           <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8"  }} >
@@ -784,6 +810,7 @@ const StakingPage = () => {
     </div>
     
     </>
+    </body>
   )
 }
 
