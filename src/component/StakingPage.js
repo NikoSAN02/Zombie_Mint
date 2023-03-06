@@ -765,11 +765,11 @@ const StakingPage = () => {
 
             <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >User's Locker Balance: {userLockedBalance}</a>
 
-            <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >$CPT Earned: {tokensEarned}</a>
+            <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >$CTP Earned: {tokensEarned}</a>
 
             <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >Current malus: {userMulusVal}%</a>
 
-            <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >Available for withdraw at the month's end: {availabletoWithDraw} $CPT</a>
+            <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >Available for withdraw at the month's end: {availabletoWithDraw} $CTP</a>
 
           </div>
         }
