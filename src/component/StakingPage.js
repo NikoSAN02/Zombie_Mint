@@ -599,7 +599,7 @@ const StakingPage = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };  return (
-        <body style={{background: `url(${bgImageStk}) no-repeat center center fixed`, backgroundSize: 'cover', height: '100vh'}}>
+        <body style={{background: `url(${bgImageStk})`, backgroundSize: 'cover', backgroundAttachment: 'fixed'}}>
     <>
     <div style={{display:"flex" , justifyContent:"center" , paddingTop:"50px" , paddingBottom:"50px"}}>
     
