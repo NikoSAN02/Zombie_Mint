@@ -501,7 +501,6 @@ const StakingPage = () => {
         let currentTimestamp = Math.floor(Date.now() / 1000);
         if(lastClaimedTimeStamp.lastClaimedTimestamp >0 ){
           let difference = currentTimestamp - lastClaimedTimeStamp.lastClaimedTimestamp;
-          console.log(difference);
           daysSinceLastClaimed = Math.floor(difference / 86400);
           setDaysSinceLastClaimed(daysSinceLastClaimed);
         }else{
@@ -510,10 +509,16 @@ const StakingPage = () => {
         }
 
         var userRewards = await blockchain.CroStkSmartContract.methods.calculateRewards(blockchain.account).call();
+        if(userRewards > 0){
         userRewards = userRewards/1e18;
         userRewards = Number.parseFloat(userRewards).toFixed(3);
         tokensEarned = userRewards;
         setTokensEarned(tokensEarned);
+        }
+        else{
+          tokensEarned = userRewards;
+          setTokensEarned(tokensEarned);
+        }
         availabletoWithDraw = (tokensEarned + userLockedBalance)/10;
         availabletoWithDraw = availabletoWithDraw.toFixed(3);
         setAvailabletoWithdraw(availabletoWithDraw);
@@ -760,11 +765,11 @@ const StakingPage = () => {
 
             <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >User's Locker Balance: {userLockedBalance}</a>
 
-            <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >$CBP Earned: {tokensEarned}</a>
+            <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >$CPT Earned: {tokensEarned}</a>
 
             <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >Current malus: {userMulusVal}%</a>
 
-            <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >Available for withdraw at the month's end: {availabletoWithDraw} $CPB</a>
+            <a className='newFont textShadow ' style={{display:"flex" , paddingLeft:"10px" , paddingTop:"13px" , color:"#fff"}} >Available for withdraw at the month's end: {availabletoWithDraw} $CPT</a>
 
           </div>
         }
