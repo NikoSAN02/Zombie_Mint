@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../redux/data/dataActions";
 import NFTImage from "./NFTImage";
 import BigNumber from "bignumber.js";
+import bgImage from "../styles/backgroundImage3.png"
 
 import graybg from "../Images/GrayBackground.png"
 import { fontSize } from '@mui/system';
@@ -23,6 +24,8 @@ const HomePage = () => {
 
   const blockchain = useSelector((state) => state.blockchain);
 
+  const lockerContractAddress = "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7"; //mainnet
+
   async function getTokenIds(){ 
   
     if(blockchain.CGBSmartContract){
@@ -35,7 +38,6 @@ const HomePage = () => {
   
   async function isApprovedCGB()
   {
-    const lockerContractAddress = "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7";
     if(blockchain.account && blockchain.CGBSmartContract)
     {
       isApprovedForAll = await blockchain.CGBSmartContract.methods.isApprovedForAll(blockchain.account, lockerContractAddress).call();
@@ -43,8 +45,8 @@ const HomePage = () => {
       //console.log(isApprovedForAll);
       setIsApprovedForAll(isApprovedForAll);
     }
-
   }
+
   async function getFactionCount(){
     
     if(blockchain.GorLocSmartContract)
@@ -74,7 +76,6 @@ const HomePage = () => {
   };
 
   async function safeApprovalCGB(){
-    const lockerContractAddress = "0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7";
     var safeApproval = await blockchain.CGBSmartContract.methods.setApprovalForAll(lockerContractAddress,true)
     .send({
       gas: "185000",
@@ -139,8 +140,9 @@ const HomePage = () => {
   }, [blockchain.account]);
 
   return (
+    <body style={{background: `url(${bgImage}) no-repeat center center fixed`, backgroundSize: 'cover', height: '100vh'}}>
     <main >
-
+      
       <div className='Notes desc  '>
 
       <label className=' newFont' > To receive a Zombie you must have 3 gorillas from either Aqua, Ignis or Terra. (Excluding Mafia) + \
@@ -211,9 +213,9 @@ const HomePage = () => {
       }
 
 
-
-
-    </main>
+</main>
+  </body>
+   
   );
 }
 

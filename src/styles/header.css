@@ -20,23 +20,30 @@
 }
 
 body {
-	background-image: url("backgroundImage3.png");
+	/* background-image: url("backgroundImage3.png"); */
+	background-color: #3a3a3a;
 	background-attachment: fixed;
 	background-size: cover;
 }
 
   
   ::-webkit-scrollbar {
-	  width: 7px;
+	  width: 5px;
 	  background-color: #ef476f;
+	  border-radius: 50px;
+	  display:none;
   }
   
   ::-webkit-scrollbar-thumb {
 	background-color: #ef476f;
+	border-radius: 50px;
+	display:none;
   }
   
   ::-webkit-scrollbar-track {
 	background-color: #ef476f;
+	border-radius: 50px;
+	display:none; 
   }
   
 
@@ -65,6 +72,28 @@ body {
 	transition: 1s;
   }
 
+/*------------------------------------------------
+	  Staking Page
+-------------------------------------------------*/
+
+  .singleImageStk{
+	display: inline;
+	justify-content: center;
+	border: 2.5px solid #3a3a3a;
+	height: 80px;
+	border-radius: 10px;
+	filter: drop-shadow(-5px 5px 7px #ef476f);
+	transition: 0.5s;
+  }
+
+  .singleImageStk:hover{
+	filter: drop-shadow(-5px 5px 7px #06d6a0);
+	border: 2.5px solid #d8d8d8;
+	transition: 1s;
+  }
+
+
+
   .imageBundle{
 	padding: 20px;
   }
@@ -74,7 +103,7 @@ body {
 }
 
 .checkit{
-	width: 14px;
+	width: 25px;
 	filter: drop-shadow(2px 2px 2px #000);
 }
 
@@ -109,6 +138,7 @@ body {
 
 .CWbutton{
 	background: #3a3a3a;
+	border: 2px solid #fff;
 	padding-right: 3px;
 	margin-bottom: 3px;
 	padding-right: 10px;
@@ -118,6 +148,7 @@ body {
 
 .CWbutton:hover{
 	background:#ef476f;
+	border: 2px solid #3a3a3a;
 	border-radius: 0px;
 	transition: 1s;
 	cursor: pointer;
@@ -147,4 +178,22 @@ body {
 	padding-left: 50px;
 	margin-right: 50px;
 	filter: drop-shadow(2px 2px 1px #ef476f);
+}
+
+.textShadow{
+	filter: drop-shadow(2px 2px 1px #ef476f);
+}
+
+.HeaderLogo{
+	background-color: #6d6d6d;
+	border: 2px solid #06d6a0;
+	border-radius: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+	cursor: cell;
+	transition: 1s;
+}
+
+.HeaderLogo:hover{
+	background-color:#06d6a0;
 }

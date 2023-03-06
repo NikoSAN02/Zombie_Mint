@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../redux/data/dataActions";
 import { connectMM } from "../redux/blockchain/blockchainActions";
 import { connectWC } from "../redux/blockchain/blockchainActions";
+import {AppBar,Container,Toolbar,Typography,} from "@mui/material";
+
 
 import { useNavigate } from "react-router-dom";
 //import BBLogo from "./assets/images/HeadLogo.gif";
@@ -33,6 +35,18 @@ const networks = {
         rpcUrls: ["https://evm.cronos.org/"],
         blockExplorerUrls: ["https://cronoscan.com/"]
       },
+      /*
+      CRO: {
+        chainId: `0x${Number(338).toString(16)}`,
+            chainName: "Cronos Testnet",
+            nativeCurrency: {
+              name: "Cronos Testnet",
+              symbol: "TCRO",
+              decimals: 18
+            },
+            rpcUrls: ["https://evm-t3.cronos.org/"],
+            blockExplorerUrls: ["https://testnet.cronoscan.com/"]
+          },*/
 };
 
 const changeNetwork = async ({ networkName, setError }) => {
@@ -58,6 +72,7 @@ function Header() {
 
     //const classes = useStyles();
 	const dispatch = useDispatch();
+  const navigate = useNavigate();
 	const blockchain = useSelector((state) => state.blockchain);
 	const data = useSelector((state) => state.data);
 	const [feedback, setFeedback] = useState("Reveal What Your Destiny Holds!");
@@ -126,14 +141,33 @@ function Header() {
 	return (
 
       <header>
-      
-        <div style={{ background:"#d8d8d8", display:"flex" , justifyContent:"center" , paddingTop:"5px" , paddingBottom:"5px"}}>
+      <AppBar style={{background:"#3a3a3a"}} position="dynamic">
+					<Container>
+					
+					<Toolbar style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+            <div style={{ display:"flex" , justifyContent:"left" , paddingTop:"5px" , paddingBottom:"5px"}}>
 
-            <img style={{ display:"inline", justifyContent:"center", paddingRight:"100px" }} src={headerlogo} height="50px" ></img>
-
+            <img className='HeaderLogo' style={{ display:"inline", justifyContent:"center" }} src={headerlogo} height="50px" ></img>
+            </div>
+            <div>
+            <Typography className='HeaderButton'
+								variant="h6"
+								onClick={() => navigate("/ZombiePage")}
+							>
+								<a className='newFont' style={{fontSize:"17px"}}  > Zombie Mint</a>
+							</Typography>
+            </div>
+            <div>
+            <Typography className='HeaderButton'
+								variant="h6"
+								onClick={() => navigate("/StakingPage")}
+							>
+								<a className='newFont' style={{fontSize:"17px"}}  > Staking</a>
+							</Typography>
+            </div>
           
           <div className='CWbutton' style={{display:"flex"  }} >
-            
+          
             <img src={walltlogo} height="45px" />
 
             <a onClick={ () => setSelectWalletPopup(true)} style={{paddingTop:"10px"}} >
@@ -141,10 +175,12 @@ function Header() {
                 CONNECTWALLET 
               </span>
             </a>
+            </div>
+         
 
-          </div>
-
-        </div>
+        </Toolbar>
+        </Container>
+        </AppBar>
       
 
 
