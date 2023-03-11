@@ -8,6 +8,10 @@ import GorLocSmartContract from "../../contracts/GorillaLocker.json";
 import CroStkSmartContract from "../../contracts/CrotopiaStaking.json";
 import CroLocSmartContract from "../../contracts/CrotopiaLocker.json";
 import CroTokenSmartContract from "../../contracts/Crotopia.json";
+
+import CroStkSmartContractNew from "../../contracts/CrotopiaStaking.json";
+import CroLocSmartContractNew from "../../contracts/CrotopiaLocker.json";
+import CroTokenSmartContractNew from "../../contracts/Crotopia.json";
 // log
 import { fetchData } from "../data/dataActions";
 
@@ -42,6 +46,8 @@ const CGBContractAdd = process.env.REACT_APP_CGB_CONTRACT_ADD;
 const ZFContractAdd = process.env.REACT_APP_ZF_CONTRACT_ADD;
 const GorLocContractAdd = process.env.REACT_APP_GOR_LOC_CONTRACT_ADD;
 const CroStkContractAdd = process.env.REACT_APP_CRO_STK_CONTRACT_ADD;
+
+const CroStkContractAddNew = process.env.REACT_APP_CRO_STK_NEW_CONTRACT_ADD;
 
 
 export const connectMM = () => {
@@ -107,7 +113,21 @@ export const connectMM = () => {
             const SmartContractCroToken = new Web3EthContract(
               CroTokenSmartContract,
               process.env.REACT_APP_CRO_TOKEN_CONTRACT_ADD
-            )
+            );
+
+            const SmartContractCroTokenNew = new Web3EthContract(
+              CroTokenSmartContractNew,
+              process.env.REACT_APP_CRO_TOKEN_NEW_CONTRACT_ADD
+            );
+            const SmartContractCroLocNew = new Web3EthContract(
+              CroLocSmartContractNew,
+              process.env.REACT_APP_CRO_LOC_NEW_CONTRACT_ADD
+            );
+            const SmartContractObjCroStkNew = new Web3EthContract(
+              CroStkSmartContractNew,
+              //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
+              CroStkContractAddNew
+            );
           
           dispatch(
             connectSuccess({
@@ -121,6 +141,9 @@ export const connectMM = () => {
               OGSmartContract: SmartContractObjOG,
               CroLocSmartContract: SmartContractCroLoc,
               CroTokenSmartContract: SmartContractCroToken,
+              CroTokenSmartContractNew: SmartContractCroTokenNew,
+              CroLocSmartContractNew: SmartContractCroLocNew,
+              CroStkSmartContractNew: SmartContractObjCroStkNew,
               web3: web3,
             })
           );
@@ -230,11 +253,25 @@ export const connectWC = () => {
       const SmartContractCroLoc = new Web3EthContract(
         CroLocSmartContract,
         process.env.REACT_APP_CRO_LOC_CONTRACT_ADD
-      )
+      );
       const SmartContractCroToken = new Web3EthContract(
         CroTokenSmartContract,
         process.env.REACT_APP_CRO_TOKEN_CONTRACT_ADD
-      )
+      );
+
+      const SmartContractCroTokenNew = new Web3EthContract(
+        CroTokenSmartContractNew,
+        process.env.REACT_APP_CRO_TOKEN_NEW_CONTRACT_ADD
+      );
+      const SmartContractCroLocNew = new Web3EthContract(
+        CroLocSmartContractNew,
+        process.env.REACT_APP_CRO_LOC_NEW_CONTRACT_ADD
+      );
+      const SmartContractObjCroStkNew = new Web3EthContract(
+        CroStkSmartContractNew,
+        //"0xAca1abD329cdd2B573f259b2457ac4A77b0dd6a7" mainnet
+        CroStkContractAddNew
+      );
 
       dispatch(
         connectSuccess({
@@ -248,6 +285,9 @@ export const connectWC = () => {
           OGSmartContract: SmartContractObjOG,
           CroLocSmartContract: SmartContractCroLoc,
           CroTokenSmartContract: SmartContractCroToken,
+          CroTokenSmartContractNew: SmartContractCroTokenNew,
+          CroLocSmartContractNew: SmartContractCroLocNew,
+          CroStkSmartContractNew: SmartContractObjCroStkNew,
           web3: web3,
         })
       );
