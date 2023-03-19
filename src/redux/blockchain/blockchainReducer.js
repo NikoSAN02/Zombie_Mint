@@ -10,6 +10,10 @@ const initialState = {
   OGSmartContract: null,
   CroLocSmartContract: null,
   CroTokenSmartContract: null,
+  // new staking
+  CroStkSmartContractNew:null,
+  CroLocSmartContractNew: null,
+  CroTokenSmartContractNew: null,
   web3: null,
   errorMsg: "",
 };
@@ -35,6 +39,10 @@ const blockchainReducer = (state = initialState, action) => {
         OGSmartContract: action.payload.OGSmartContract,
         CroLocSmartContract: action.payload.CroLocSmartContract,
         CroTokenSmartContract: action.payload.CroTokenSmartContract,
+        // new staking
+        CroStkSmartContractNew: action.payload.CroStkSmartContractNew,
+        CroLocSmartContractNew: action.payload.CroLocSmartContractNew,
+        CroTokenSmartContractNew: action.payload.CroTokenSmartContractNew,
         web3: action.payload.web3,
       };
     case "CONNECTION_FAILED":

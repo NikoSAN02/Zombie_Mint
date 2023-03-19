@@ -162,8 +162,16 @@ function Header() {
 								variant="h6"
 								onClick={() => navigate("/StakingPage")}
 							>
-								<a className='newFont' style={{fontSize:"17px"}}  > Staking</a>
+								<a className='newFont' style={{fontSize:"17px"}}  > Staking Old</a>
 							</Typography>
+            </div>
+            <div>
+            <Typography className='HeaderButton'
+                variant="h6"
+                onClick={() => navigate("/StakingPageNew")}
+              >
+                <a className='newFont' style={{fontSize:"17px"}}  > Staking New</a>
+              </Typography>
             </div>
           
           <div className='CWbutton' style={{display:"flex"  }} >

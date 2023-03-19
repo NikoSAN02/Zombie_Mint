@@ -10,7 +10,7 @@ import bgImageStk from "../Images/Background_Staking_1.png"
 
 
 
-const StakingPage = () => {
+const StakingPageNew = () => {
     const [value, setValue] = React.useState(0);
     const blockchain = useSelector((state) => state.blockchain);
     var [isApprovedForAllCGB, setIsApprovedForAllCGB] = useState([]);
@@ -31,7 +31,7 @@ const StakingPage = () => {
     var [collectionArray, setCollectionArray] = useState(null);
     var [tokenIdsArray, setTokenIDsArray] = useState(null);
 
-    const stakingContract = process.env.REACT_APP_CRO_STK_CONTRACT_ADD;
+    const stakingContract = process.env.REACT_APP_CRO_STK_NEW_CONTRACT_ADD;
 
     const [withdrawModelPopup, setWithdrawModelPopup] = useState(false);
 
@@ -64,18 +64,18 @@ const StakingPage = () => {
 
     //function to get the NFTs of each collection owned by the user
     async function getNFTOwnedByUser(){
-      if(blockchain.account && blockchain.CroStkSmartContract)
+      if(blockchain.account && blockchain.CroStkSmartContractNew)
       {
         try{
-        tokenIDsZB = await blockchain.CroStkSmartContract.methods.tokensOfWallet(blockchain.account, collectionZB).call();
+        tokenIDsZB = await blockchain.CroStkSmartContractNew.methods.tokensOfWallet(blockchain.account, collectionZB).call();
         setTokenIDsZB(tokenIDsZB);
-        tokenIDsCGB = await blockchain.CroStkSmartContract.methods.tokensOfWallet(blockchain.account, collectionCGB).call();
+        tokenIDsCGB = await blockchain.CroStkSmartContractNew.methods.tokensOfWallet(blockchain.account, collectionCGB).call();
         setTokenIDsCGB(tokenIDsCGB);
-        tokenIDsCMB = await blockchain.CroStkSmartContract.methods.tokensOfWallet(blockchain.account, collectionCMB).call();
+        tokenIDsCMB = await blockchain.CroStkSmartContractNew.methods.tokensOfWallet(blockchain.account, collectionCMB).call();
         setTokenIDsCMB(tokenIDsCMB);
-        tokenIDsOG = await blockchain.CroStkSmartContract.methods.tokensOfWallet(blockchain.account, collectionOG).call();
+        tokenIDsOG = await blockchain.CroStkSmartContractNew.methods.tokensOfWallet(blockchain.account, collectionOG).call();
         setTokenIDsOG(tokenIDsOG);
-        const tokenIDsCPT = await blockchain.CroStkSmartContract.methods.tokensOfWallet(blockchain.account, collectionCPT).call();
+        const tokenIDsCPT = await blockchain.CroStkSmartContractNew.methods.tokensOfWallet(blockchain.account, collectionCPT).call();
         setTokenIDsCPT(tokenIDsCPT);
       }catch (err)
       {
@@ -88,22 +88,22 @@ const StakingPage = () => {
     //Get the info of NFTs staked by the user
     async function getNFTStakedByUser(){
 
-      if(blockchain.account && blockchain.CroStkSmartContract)
+      if(blockchain.account && blockchain.CroStkSmartContractNew)
       {
         try{
-        stakedTokenIDsZB = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionZB).call();
+        stakedTokenIDsZB = await blockchain.CroStkSmartContractNew.methods.getUserStakedTokensByCollection(blockchain.account, collectionZB).call();
         
         setStakedTokenIDsZB(stakedTokenIDsZB);
-        stakedTokenIDsCGB = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCGB).call();
+        stakedTokenIDsCGB = await blockchain.CroStkSmartContractNew.methods.getUserStakedTokensByCollection(blockchain.account, collectionCGB).call();
         
         setStakedTokenIDsCGB(stakedTokenIDsCGB);
-        stakedTokenIDsCMB = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCMB).call();
+        stakedTokenIDsCMB = await blockchain.CroStkSmartContractNew.methods.getUserStakedTokensByCollection(blockchain.account, collectionCMB).call();
         
         setStakedTokenIDsCMB(stakedTokenIDsCMB);
-        stakedTokenIDsOG = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionOG).call();
+        stakedTokenIDsOG = await blockchain.CroStkSmartContractNew.methods.getUserStakedTokensByCollection(blockchain.account, collectionOG).call();
         
         setStakedTokenIDsOG(stakedTokenIDsOG);
-        stakedTokenIDsCPT = await blockchain.CroStkSmartContract.methods.getUserStakedTokensByCollection(blockchain.account, collectionCPT).call();
+        stakedTokenIDsCPT = await blockchain.CroStkSmartContractNew.methods.getUserStakedTokensByCollection(blockchain.account, collectionCPT).call();
         
         setStakedTokenIDsCPT(stakedTokenIDsCPT);
       }catch(err)
@@ -161,10 +161,10 @@ const StakingPage = () => {
         alert("Sorry you have more than 35 NFTs staked. You need to unstake it using the checkboxes");
       }
       else{
-          if(blockchain.account && blockchain.CroStkSmartContract){
+          if(blockchain.account && blockchain.CroStkSmartContractNew){
           var gasPriceVal = 1285000;
-          gasPriceVal =   await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).estimateGas({from: blockchain.account});
-          await blockchain.CroStkSmartContract.methods.unstakePrimate(unStakeCol, unstakeToken).send({
+          gasPriceVal =   await blockchain.CroStkSmartContractNew.methods.unstakePrimate(unStakeCol, unstakeToken).estimateGas({from: blockchain.account});
+          await blockchain.CroStkSmartContractNew.methods.unstakePrimate(unStakeCol, unstakeToken).send({
             gas: gasPriceVal,
             from: blockchain.account,
           }).once("error", (err) => {
@@ -319,8 +319,8 @@ const StakingPage = () => {
           }
           else{
 
-          gasPriceVal =   await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).estimateGas({from: blockchain.account});
-          await blockchain.CroStkSmartContract.methods.stakePrimate(collectionArray, tokenIdsArray).send({
+          gasPriceVal =   await blockchain.CroStkSmartContractNew.methods.stakePrimate(collectionArray, tokenIdsArray).estimateGas({from: blockchain.account});
+          await blockchain.CroStkSmartContractNew.methods.stakePrimate(collectionArray, tokenIdsArray).send({
               gas: gasPriceVal,
               from: blockchain.account,
             }).once("error", (err) => {
@@ -356,10 +356,10 @@ const StakingPage = () => {
         alert("Select atleast 1 NFT to Unstake");
       }
       else{
-        if(blockchain.account && blockchain.CroStkSmartContract){
+        if(blockchain.account && blockchain.CroStkSmartContractNew){
       
-        gasPriceVal =   await blockchain.CroStkSmartContract.methods.unstakePrimate(collectionArray, tokenIdsArray).estimateGas({from: blockchain.account});
-       await blockchain.CroStkSmartContract.methods.unstakePrimate(collectionArray, tokenIdsArray).send({
+        gasPriceVal =   await blockchain.CroStkSmartContractNew.methods.unstakePrimate(collectionArray, tokenIdsArray).estimateGas({from: blockchain.account});
+       await blockchain.CroStkSmartContractNew.methods.unstakePrimate(collectionArray, tokenIdsArray).send({
           gas: gasPriceVal,
           from: blockchain.account,
         }).once("error", (err) => {
@@ -446,13 +446,13 @@ const StakingPage = () => {
 
     //get all the NFTs staked by the user to display the count on screen.
     async function getTotalNFTStakedByUser(){
-      if(blockchain.account && blockchain.CroStkSmartContract)
+      if(blockchain.account && blockchain.CroStkSmartContractNew)
       {
-        const ZBStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionZB).call();
-        const CGBStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionCGB).call();
-        const CMBStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionCMB).call();
-        const OGStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionOG).call();
-        const CPTStaked = await blockchain.CroStkSmartContract.methods.getUsersNftBalance(blockchain.account, collectionCPT).call();
+        const ZBStaked = await blockchain.CroStkSmartContractNew.methods.getUsersNftBalance(blockchain.account, collectionZB).call();
+        const CGBStaked = await blockchain.CroStkSmartContractNew.methods.getUsersNftBalance(blockchain.account, collectionCGB).call();
+        const CMBStaked = await blockchain.CroStkSmartContractNew.methods.getUsersNftBalance(blockchain.account, collectionCMB).call();
+        const OGStaked = await blockchain.CroStkSmartContractNew.methods.getUsersNftBalance(blockchain.account, collectionOG).call();
+        const CPTStaked = await blockchain.CroStkSmartContractNew.methods.getUsersNftBalance(blockchain.account, collectionCPT).call();
         sumNftStakedbyUser = parseInt(ZBStaked) + parseInt(CGBStaked) + parseInt(CMBStaked) + parseInt(OGStaked) + parseInt(CPTStaked);
         setSumNftStakedbyUser(sumNftStakedbyUser);
     }
@@ -461,14 +461,14 @@ const StakingPage = () => {
 
     //Check airdrop round and other user staking info
     async function checkAirDropRound(){
-      if(blockchain.account && blockchain.CroLocSmartContract)
+      if(blockchain.account && blockchain.CroLocSmartContractNew)
       {
         try{
-              currentAirdropRound = await blockchain.CroLocSmartContract.methods.airdropRound().call();
+              currentAirdropRound = await blockchain.CroLocSmartContractNew.methods.airdropRound().call();
               setCurrentAirdropRound(currentAirdropRound);
-              userAirdropAmount = await blockchain.CroLocSmartContract.methods.usersAirdropAmount(blockchain.account).call();
+              userAirdropAmount = await blockchain.CroLocSmartContractNew.methods.usersAirdropAmount(blockchain.account).call();
               setUserAirdropAmount(userAirdropAmount);
-              const userDetails = await blockchain.CroLocSmartContract.methods.usersLocker(blockchain.account).call();
+              const userDetails = await blockchain.CroLocSmartContractNew.methods.usersLocker(blockchain.account).call();
               userAirdropRound = userDetails.airdropRound;
               setUserAirdropRound(userAirdropRound);
               userLockedBalance = userDetails.lockedBalance;
@@ -477,7 +477,7 @@ const StakingPage = () => {
 
               setUserLockedBalance(userLockedBalance);
 
-              const mulusValue = await blockchain.CroLocSmartContract.methods.getUserTaxAmount(blockchain.account).call();
+              const mulusValue = await blockchain.CroLocSmartContractNew.methods.getUserTaxAmount(blockchain.account).call();
               userMulusVal = mulusValue.taxPercentage;
               setUserMulusVal(userMulusVal);
             }
@@ -490,16 +490,16 @@ const StakingPage = () => {
 
 
     async function handleAirdrop() {
-      if(blockchain.account && blockchain.CroLocSmartContract){
-        const resp = await blockchain.CroLocSmartContract.methods.airdropRound().call();
+      if(blockchain.account && blockchain.CroLocSmartContractNew){
+        const resp = await blockchain.CroLocSmartContractNew.methods.airdropRound().call();
         checkAirDropRound();
       }else{alert("Please connect your wallet");}
     } 
 
     //check last claimed and user rewards.
     async function lastClaimedTime(){
-      if(blockchain.account && blockchain.CroStkSmartContract){
-        const lastClaimedTimeStamp = await blockchain.CroStkSmartContract.methods.stakers(blockchain.account).call();
+      if(blockchain.account && blockchain.CroStkSmartContractNew){
+        const lastClaimedTimeStamp = await blockchain.CroStkSmartContractNew.methods.stakers(blockchain.account).call();
 
         let currentTimestamp = Math.floor(Date.now() / 1000);
         if(lastClaimedTimeStamp.lastClaimedTimestamp >0 ){
@@ -511,7 +511,7 @@ const StakingPage = () => {
           setDaysSinceLastClaimed(daysSinceLastClaimed);
         }
 
-        var userRewards = await blockchain.CroStkSmartContract.methods.calculateRewards(blockchain.account).call();
+        var userRewards = await blockchain.CroStkSmartContractNew.methods.calculateRewards(blockchain.account).call();
         if(userRewards > 0){
         userRewards = userRewards/1e18;
         userRewards = Number.parseFloat(userRewards).toFixed(3);
@@ -530,9 +530,9 @@ const StakingPage = () => {
 
     async function claimRewards(walletType){
 
-      if(blockchain.account && blockchain.CroStkSmartContract){
+      if(blockchain.account && blockchain.CroStkSmartContractNew){
         try{
-          var userRewards = await blockchain.CroStkSmartContract.methods.claimRewards(walletType)
+          var userRewards = await blockchain.CroStkSmartContractNew.methods.claimRewards(walletType)
           .send({
             gas: "185000",
             from: blockchain.account,
@@ -548,35 +548,35 @@ const StakingPage = () => {
     async function totalNftStakedForEachCollection(){
       if(blockchain.account && blockchain.CGBSmartContract)
       {
-        totalStakedCGB = await blockchain.CGBSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        totalStakedCGB = await blockchain.CGBSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_NEW_CONTRACT_ADD).call();
         setTotalStakedCGB(totalStakedCGB);
       }
       if(blockchain.account && blockchain.CMBSmartContract)
       {
-        totalStakedCMB = await blockchain.CMBSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        totalStakedCMB = await blockchain.CMBSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_NEW_CONTRACT_ADD).call();
         setTotalStakedCMB(totalStakedCMB);
       }
       if(blockchain.account && blockchain.CPTSmartContract)
       {
-        totalStakedCPT = await blockchain.CPTSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        totalStakedCPT = await blockchain.CPTSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_NEW_CONTRACT_ADD).call();
         setTotalStakedCPT(totalStakedCPT);
       }
       if(blockchain.account && blockchain.OGSmartContract)
       {
-        totalStakedOG = await blockchain.OGSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        totalStakedOG = await blockchain.OGSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_NEW_CONTRACT_ADD).call();
         setTotalStakedOG(totalStakedOG);
       }
       if(blockchain.account && blockchain.ZFSmartContract)
       {
-        totalStakedZF = await blockchain.ZFSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_CONTRACT_ADD).call();
+        totalStakedZF = await blockchain.ZFSmartContract.methods.balanceOf(process.env.REACT_APP_CRO_STK_NEW_CONTRACT_ADD).call();
         setTotalStakedZF(totalStakedZF);
       }
     }
 
     async function getStakingCurrentAllocation(){
-      if(blockchain.account && blockchain.CroLocSmartContract){
-        var maxDistribution = await blockchain.CroLocSmartContract.methods.MAX_DISTRIBUTION().call();
-        var totalDistributed = await blockchain.CroLocSmartContract.methods.totalDistributed().call();
+      if(blockchain.account && blockchain.CroLocSmartContractNew){
+        var maxDistribution = await blockchain.CroLocSmartContractNew.methods.MAX_DISTRIBUTION().call();
+        var totalDistributed = await blockchain.CroLocSmartContractNew.methods.totalDistributed().call();
         maxDistribution = maxDistribution/1e18;
         maxDistribution = Number.parseFloat(maxDistribution).toFixed(1);
         totalDistributed = totalDistributed/1e18;
@@ -824,4 +824,4 @@ const StakingPage = () => {
   )
 }
 
-export default StakingPage
+export default StakingPageNew
