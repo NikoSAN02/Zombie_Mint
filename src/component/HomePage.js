@@ -156,10 +156,10 @@ const HomePage = () => {
          <label className='newFont' > Aqua: </label>
           <label className='newFont' > {faction1} </label>
         
-        <label className='newFont' > Terra:</label>
+        <label className='newFont' > Ignis:</label>
           <label className='newFont' >{faction2} </label>
         
-        <label className='newFont' > Ignis: </label>
+        <label className='newFont' > Terra: </label>
           <label className='newFont' >{faction3} </label>
         </div>
         <div>
