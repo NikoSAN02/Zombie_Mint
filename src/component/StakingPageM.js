@@ -604,8 +604,13 @@ const StakingPageM = () => {
       };  return (
         <body style={{background: `url(${bgImageStk})`, backgroundSize: 'cover', backgroundAttachment: 'fixed'}}>
     <>
-    <div style={{display:"flex" , justifyContent:"center" , paddingTop:"50px" , paddingBottom:"50px"}}>
     
+    <div style={{display:"flex" , justifyContent:"center" , paddingTop:"50px" , paddingBottom:"50px"}}>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
     <div style={{paddingRight:"20px"}} >
     { (isApprovedForAllCGB && isApprovedForAllCPT && isApprovedForAllCMB && isApprovedForAllOG && isApprovedForAllZF)? (
     

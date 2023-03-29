@@ -8,6 +8,7 @@ import StakingNew from './component/StakingPageNew';
 import HeaderM from './component/HeaderM';
 import StakingM from './component/StakingPageM';
 import StakingNewM from './component/StakingPageNewM';
+import HomePageM from './component/HomePageM';
 function App() {
 
   var browserMob = false;
@@ -33,13 +34,13 @@ function App() {
         {browserMob === false ? (
           <Route path="/" element={<HomePage />} />
           ) : (
-            <Route path="/" element={<HomePage />} /> 
+            <Route path="/" element={<HomePageM />} /> 
           )}
 
           {browserMob === false ? (
               <Route path="/ZombiePage" element={<HomePage />} />
           ) : (
-              <Route path="/ZombiePage" element={<HomePage />} />
+              <Route path="/ZombiePage" element={<HomePageM />} />
           )}
 
           {browserMob === false ? (
