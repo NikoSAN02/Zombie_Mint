@@ -606,12 +606,8 @@ const StakingPageM = () => {
     <>
     
     <div style={{display:"flex" , justifyContent:"center" , paddingTop:"50px" , paddingBottom:"50px"}}>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <div style={{paddingRight:"20px"}} >
+  
+    <div style={{paddingRight:"20px", paddingTop: "100px"}} >
     { (isApprovedForAllCGB && isApprovedForAllCPT && isApprovedForAllCMB && isApprovedForAllOG && isApprovedForAllZF)? (
     
     <span> </span>
@@ -689,7 +685,7 @@ const StakingPageM = () => {
   <div style={{paddingTop:"20px"}}>
 
     <div className='BigBox'  style={{ display:"flex"}} >
-    <div style={{width:"350px", height:"400px" , borderRadius:"10px", overflowY: "scroll" }}>
+    <div style={{width:"300px", height:"400px" , borderRadius:"10px", overflowY: "scroll" }}>
     <a className='newFont textShadow' style={{display:"flex" , justifyContent:"center" , fontSize:"20px" , color:"#fff" }} >Staked NFT Number</a>
     <br/>
     <Button style={{background:"#ef476f", borderRadius:"0px", color:"#d8d8d8" }} >
