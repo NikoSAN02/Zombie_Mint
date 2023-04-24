@@ -52,7 +52,10 @@ const networks = {
 const changeNetwork = async ({ networkName, setError }) => {
 	try {
 	  if (!window.ethereum) throw new Error("No crypto wallet found");
-	  await window.ethereum.request({
+	  const networkToAdd = networks[networkName];
+    const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
+    if (currentChainId !== networkToAdd.chainId) {
+    await window.ethereum.request({
 	    method: "wallet_addEthereumChain",
 	    params: [
 	      {
@@ -60,6 +63,7 @@ const changeNetwork = async ({ networkName, setError }) => {
 	      }
 	    ]
 	  });
+  }
 	  
 	} catch (err) {
 	  console.log(err.message);
